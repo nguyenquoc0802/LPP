@@ -16,5 +16,10 @@ namespace LPP
         {
             InitializeComponent();
         }
+
+        private void btnRead_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
