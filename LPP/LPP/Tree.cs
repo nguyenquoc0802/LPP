@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LPP.Connectives;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace LPP
 {
     class Tree
     {
         private Node _root;
+        private Stack<Node> _myStack;
 
         public Tree()
         {
             this._root = null;
+            this._myStack = new Stack<Node>();
         }
 
         //remove parenthesis and comma
@@ -25,108 +29,115 @@ namespace LPP
             return new string(result);
         }
         //set the node using switch case
-        private void SetNodeChecker(Node node , string c)
+        private bool IsOperator(string c)
+        {
+            switch (c)
+            {
+                case ("&"):
+                    return true;
+                case "|":
+                    return true;
+                case ">":
+                    return true;
+                case "~":
+                    return true;
+                case "=":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private Node Setnode(string c)
         {
             switch (c)
             {
                 case "&":
-                    node = new Node(new AndOperator());
-                    break;
+                    return new Node(new AndOperator(c));
                 case "|":
-                    node = new Node(new OrOperator());
-                    break;
+                    return new Node(new OrOperator(c));
                 case ">":
-                    node = new Node(new Implication());
-                    break;
+                    return new Node(new Implication(c));
                 case "~":
-                    node = new Node(new Negation());
-                    break;
+                    return new Node(new Negation(c));
                 case "=":
-                    node = new Node(new BiImplication());
-                    break;
+                    return new Node(new BiImplication(c));
                 default:
-                    node = new Node(new Variable(c));
-                    break;
+                    return new Node(new Variable(c));
             }
         }
         //create tree node
-        public void InsertTree(string inputProposition)
+        public string InsertTree(string inputProposition)
         {
+            string display = "";
             string input = this.TrimInputPropositions(inputProposition);
             while(input.Length > 0)
             {
-                if(this._root == null)
+                if (this._root == null)
                 {
-                    this.SetNodeChecker(this._root, input[0].ToString());
-                    //remove the first char
-                    input.Substring(1);
+                    this._root = this.Setnode(input[0].ToString());
+                    input.Remove(0, 1);
                 }
                 else
                 {
-                    this.PreOrderHelper(this._root, ref input);
+                    this.PrefixHelper(this._root, input);
                 }
-            }
-        }
-        //display node in pre-order ordering
-        public string DisplayPreOrder()
-        {
-            string display = "";
-            return this.DisplayPreOrderHelper(this._root, ref display);
-        }
-
-        private string DisplayPreOrderHelper(Node root, ref string display)
-        {
-            if (root != null)
-            {
-                display += root.Connective.GetVal();
-                this.DisplayPreOrderHelper(root.LeftNode, ref display);
-                this.DisplayPreOrderHelper(root.RightNode, ref display);
             }
             return display;
         }
 
-        private void PreOrderHelper(Node root, ref string propositions)
+        private void PrefixHelper(Node root, string propositions)
         {
-            string c = propositions[0].ToString();
-            switch (c)
+            if(root.LeftNode == null)
             {
-                case "&":
-                    if(root.LeftNode == null)
-                    {
-                        root.InsertLeftNode(new Node(new AndOperator()));
-                        propositions.Substring(1);
-                        this.PreOrderHelper(root.LeftNode, ref propositions);
-                    }
-                    else
-                    {
-                        root.InsertRightNode(new Node(new AndOperator()));
-                        propositions.Substring(1);
-                        this.PreOrderHelper(root.LeftNode, ref propositions);
-                    }
-                    break;
-                //case '|':
-                //    root = new Node(new OrOperator());
-                //    break;
-                //case '>':
-                //    root = new Node(new Implication());
-                //    break;
-                //case '~':
-                //    root = new Node(new Negation());
-                //    break;
-                //case '=':
-                //    root = new Node(new BiImplication());
-                //    break;
-                default:
-                    if(root.LeftNode == null)
-                    {
-                        root.InsertLeftNode(new Node(new Variable(c)));
-                    }
-                    else
-                    {
-                        root.InsertRightNode(new Node(new Variable(c)));
-                    }
-                    break;
+                string c = propositions[0].ToString();
+                switch(c)
+                {
+                    case "&":
+                        root.LeftNode = new Node(new AndOperator(c));
+                        this.PrefixHelper(root.LeftNode, propositions.Remove(0, 1));
+
+                        break;
+                    default:
+                        root = new Node(new Variable(c));
+                        propositions.Remove(0, 1);
+                        break;
+                }
             }
+            else
+            {
+                string c = propositions[0].ToString();
+                switch (c)
+                {
+                    case "&":
+                        root = new Node(new AndOperator(c));
+                        this.PrefixHelper(root.RightNode, propositions.Remove(0, 1));
+
+                        break;
+                    default:
+                        root = new Node(new Variable(c));
+                        propositions.Remove(0, 1);
+                        break;
+                }
+            }
+        }
+
+        //display
+        public string DisplayInOrder()
+        {
+            string display = "";
+            return this.InOrderHelper(this._root, ref display);
+        }
+
+        public string InOrderHelper(Node root, ref string display)
+        {
+            if (root != null)
+            {
+                this.InOrderHelper(root.LeftNode, ref display);
+                display += root + " ";
+                this.InOrderHelper(root.RightNode, ref display);
+            }
+            return display;
         }
     }
 }

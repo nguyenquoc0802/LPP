@@ -23,8 +23,8 @@ namespace LPP
         private void btnRead_Click(object sender, EventArgs e)
         {
             string propositions = tbInput.Text;
-            this.myTree.InsertTree(propositions);
-            tbOutputInfix.Text = myTree.DisplayPreOrder();
+            myTree.InsertTree(propositions);
+            tbOutputInfix.Text = myTree.DisplayInOrder();
         }
     }
 }

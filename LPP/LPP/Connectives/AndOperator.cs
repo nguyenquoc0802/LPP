@@ -8,14 +8,12 @@ namespace LPP.Connectives
 {
     class AndOperator: Connective
     {
-        public AndOperator() : base()
-        {
-            this._value = "&";
-        }
+        public AndOperator(string value) : base(value)
+        { }
 
         public override string ToString()
         {
-            return base.ToString() + this._value;
+            return base.ToString();
         }
     }
 }

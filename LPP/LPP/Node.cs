@@ -4,74 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LPP.Connectives;
+using LPP;
 
 namespace LPP
 {
     class Node
     {
         //field
-        private Node _leftNode;
-        private Node _rightNode;
-        private Connective _connective;
-        private Variable _variable;
 
-        public Node LeftNode
-        {
-            get
-            {
-                return this._leftNode;
-            }
-        }
-
-        public Node RightNode
-        {
-            get
-            {
-                return this._rightNode;
-            }
-        }
-
-        public Connective Connective
-        {
-            get
-            {
-                return this._connective;
-            }
-        }
-
-        public Variable Variable
-        {
-            get
-            {
-                return this._variable;
-            }
-        }
+        public Node LeftNode { get; set; }
+        public Node RightNode { get; set; } 
+        public Connective PropConnective { get; set; } 
+        public Variable PropVariable { get; set; } 
 
         public Node()
         {
-            this._leftNode = null;
-            this._rightNode = null;
+            this.LeftNode = null;
+            this.RightNode = null;
         }
 
         public Node(Connective connective): base()
         {
-            this._connective = connective;
+            this.PropConnective = connective;
         }
 
         public Node(Variable variable)
         {
-            this._variable = variable;
+            this.PropVariable = variable;
         }
-
-        public void InsertLeftNode(Node left)
-        {
-            this._leftNode = left;
-        }
-
-        public void InsertRightNode(Node right)
-        {
-            this._rightNode = right;
-        }
-
     }
 }

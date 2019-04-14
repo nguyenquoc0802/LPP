@@ -8,14 +8,12 @@ namespace LPP.Connectives
 {
     class OrOperator: Connective
     {
-        public OrOperator() : base()
-        {
-            this._value = "|";
-        }
+        public OrOperator(string value) : base(value)
+        { }
 
         public override string ToString()
         {
-            return base.ToString() + this._value;
+            return base.ToString();
         }
     }
 }
