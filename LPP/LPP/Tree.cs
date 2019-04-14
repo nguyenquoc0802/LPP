@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using LPP.Connectives;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
+using System.Drawing;
 
 namespace LPP
 {
@@ -34,51 +36,54 @@ namespace LPP
             {
                 if(i == 0)
                 {
-                    this._root = new Node(new AndOperator(prefixPropositions[0].ToString()));
-                    this._root.LeftNode = this._myStack.Pop();
-                    this._root.RightNode = this._myStack.Pop();
+                    this.InsertTreeHelper(ref this._root, prefixPropositions[i].ToString());
                 }
                 else
                 {
                     string c = prefixPropositions[i].ToString();
-                    switch(c)
-                    {
-                        case "&":
-                            Node andOperator = new Node(new AndOperator(c));
-                            andOperator.LeftNode = this._myStack.Pop();
-                            andOperator.RightNode = this._myStack.Pop();
-                            this._myStack.Push(andOperator);
-                            break;
-                        case "|":
-                            Node orOperator = new Node(new OrOperator(c));
-                            orOperator.LeftNode = this._myStack.Pop();
-                            orOperator.RightNode = this._myStack.Pop();
-                            this._myStack.Push(orOperator);
-                            break;
-                        case ">":
-                            Node implication = new Node(new Implication(c));
-                            implication.LeftNode = this._myStack.Pop();
-                            implication.RightNode = this._myStack.Pop();
-                            this._myStack.Push(implication);
-                            break;
-                        case "~":
-                            Node negation = new Node(new Negation(c));
-                            negation.LeftNode = this._myStack.Pop();
-                            negation.RightNode = this._myStack.Pop();
-                            this._myStack.Push(negation);
-                            break;
-                        case "=":
-                            Node biImplication = new Node(new BiImplication(c));
-                            biImplication.LeftNode = this._myStack.Pop();
-                            biImplication.RightNode = this._myStack.Pop();
-                            this._myStack.Push(biImplication);
-                            break;
-                        default:
-                            Node variable = new Node(new Variable(c));
-                            this._myStack.Push(variable);
-                            break;
-                    }
+                    Node node = null;
+                    this.InsertTreeHelper(ref node, c);
                 }
+            }
+        }
+        // help with evaluation
+        private void InsertTreeHelper(ref Node n, string c)
+        {
+            switch (c)
+            {
+                case "&":
+                    n = new Node(new AndOperator(c));
+                    n.LeftNode = this._myStack.Pop();
+                    n.RightNode = this._myStack.Pop();
+                    this._myStack.Push(n);
+                    break;
+                case "|":
+                    n = new Node(new OrOperator(c));
+                    n.LeftNode = this._myStack.Pop();
+                    n.RightNode = this._myStack.Pop();
+                    this._myStack.Push(n);
+                    break;
+                case ">":
+                    n = new Node(new Implication(c));
+                    n.LeftNode = this._myStack.Pop();
+                    n.RightNode = this._myStack.Pop();
+                    this._myStack.Push(n);
+                    break;
+                case "~":
+                    n = new Node(new Negation(c));
+                    n.RightNode = this._myStack.Pop();
+                    this._myStack.Push(n);
+                    break;
+                case "=":
+                    n = new Node(new BiImplication(c));
+                    n.LeftNode = this._myStack.Pop();
+                    n.RightNode = this._myStack.Pop();
+                    this._myStack.Push(n);
+                    break;
+                default:
+                    n = new Node(new Variable(c));
+                    this._myStack.Push(n);
+                    break;
             }
         }
 
@@ -86,18 +91,53 @@ namespace LPP
         public string DisplayInOrder()
         {
             string display = "";
-            return this.InOrderHelper(this._root, ref display);
+            return this.DisplayInOrderHelper(this._root, ref display);
         }
 
-        private string InOrderHelper(Node root, ref string display)
+        private string DisplayInOrderHelper(Node root, ref string display)
         {
             if (root != null)
             {
-                this.InOrderHelper(root.LeftNode, ref display);
-                display += root + " ";
-                this.InOrderHelper(root.RightNode, ref display);
+                display += "(";
+                this.DisplayInOrderHelper(root.LeftNode, ref display);
+                display += " " + root + " ";
+                this.DisplayInOrderHelper(root.RightNode, ref display);
+                display += ")";
             }
             return display;
+        }
+
+        //draw Tree
+        public string DrawTree()
+        {
+            int index = 1;
+            string content = "graph logic {\r\nnode [ fontname = \"Arial\" ]\r\n";
+            this.SetIndexHelper(this._root, ref index);
+            return this.DrawTreeHelper(this._root, ref content) + "}";
+        }
+
+        //help to create the content
+        private string DrawTreeHelper(Node root, ref string content)
+        {
+            if(root != null)
+            {
+                root.DrawGraphHelper(ref content);
+                this.DrawTreeHelper(root.LeftNode, ref content);
+                this.DrawTreeHelper(root.RightNode, ref content);
+            }
+            return content;
+        }
+
+        //set index for each node
+        private void SetIndexHelper(Node root, ref int index)
+        {
+            if(root != null)
+            {
+                root.Index = index;
+                index++;
+                this.SetIndexHelper(root.LeftNode, ref index);
+                this.SetIndexHelper(root.RightNode, ref index);
+            }
         }
     }
 }

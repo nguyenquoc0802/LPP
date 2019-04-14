@@ -32,6 +32,8 @@
             this.tbInput = new System.Windows.Forms.TextBox();
             this.tbOutputInfix = new System.Windows.Forms.TextBox();
             this.lbInfix = new System.Windows.Forms.Label();
+            this.btnDraw = new System.Windows.Forms.Button();
+            this.tbTest = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnRead
@@ -68,14 +70,35 @@
             this.lbInfix.TabIndex = 2;
             this.lbInfix.Text = "Infix Notation";
             // 
+            // btnDraw
+            // 
+            this.btnDraw.Enabled = false;
+            this.btnDraw.Location = new System.Drawing.Point(12, 88);
+            this.btnDraw.Name = "btnDraw";
+            this.btnDraw.Size = new System.Drawing.Size(75, 23);
+            this.btnDraw.TabIndex = 0;
+            this.btnDraw.Text = "Draw Tree";
+            this.btnDraw.UseVisualStyleBackColor = true;
+            this.btnDraw.Click += new System.EventHandler(this.btnDraw_Click);
+            // 
+            // tbTest
+            // 
+            this.tbTest.Location = new System.Drawing.Point(12, 229);
+            this.tbTest.Multiline = true;
+            this.tbTest.Name = "tbTest";
+            this.tbTest.Size = new System.Drawing.Size(776, 209);
+            this.tbTest.TabIndex = 1;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.lbInfix);
+            this.Controls.Add(this.tbTest);
             this.Controls.Add(this.tbOutputInfix);
             this.Controls.Add(this.tbInput);
+            this.Controls.Add(this.btnDraw);
             this.Controls.Add(this.btnRead);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -90,6 +113,8 @@
         private System.Windows.Forms.TextBox tbInput;
         private System.Windows.Forms.TextBox tbOutputInfix;
         private System.Windows.Forms.Label lbInfix;
+        private System.Windows.Forms.Button btnDraw;
+        private System.Windows.Forms.TextBox tbTest;
     }
 }
 
