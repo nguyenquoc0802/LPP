@@ -13,9 +13,9 @@ namespace LPP
         private bool _value;
 
         //constructor
-        public Variable(char name)
+        public Variable(string name)
         {
-            this._name =  name.ToString();
+            this._name =  name;
         }
 
         public override string ToString()

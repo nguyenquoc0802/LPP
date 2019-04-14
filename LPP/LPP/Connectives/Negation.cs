@@ -8,11 +8,14 @@ namespace LPP.Connectives
 {
     class Negation: Connective
     {
-        public Negation(): base() { }
+        public Negation() : base()
+        {
+            this._value = "~";
+        }
 
         public override string ToString()
         {
-            return base.ToString() + "~";
+            return base.ToString() + this._value;
         }
     }
 }

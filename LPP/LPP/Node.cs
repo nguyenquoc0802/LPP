@@ -15,6 +15,22 @@ namespace LPP
         private Connective _connective;
         private Variable _variable;
 
+        public Node LeftNode
+        {
+            get
+            {
+                return this._leftNode;
+            }
+        }
+
+        public Node RightNode
+        {
+            get
+            {
+                return this._rightNode;
+            }
+        }
+
         public Connective Connective
         {
             get

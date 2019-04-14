@@ -15,11 +15,16 @@ namespace LPP
         public Form1()
         {
             InitializeComponent();
+            myTree = new Tree();
         }
+
+        Tree myTree;
 
         private void btnRead_Click(object sender, EventArgs e)
         {
-
+            string propositions = tbInput.Text;
+            this.myTree.InsertTree(propositions);
+            tbOutputInfix.Text = myTree.DisplayPreOrder();
         }
     }
 }
