@@ -8,14 +8,6 @@ namespace LPP.Connectives
 {
     class BiImplication: Connective
     {
-        public BiImplication() : base()
-        {
-            this._value = "=";
-        }
-
-        public override string ToString()
-        {
-            return base.ToString() + this._value;
-        }
+        public BiImplication(string value) : base(value) { }
     }
 }

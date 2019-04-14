@@ -22,7 +22,9 @@ namespace LPP
 
         private void btnRead_Click(object sender, EventArgs e)
         {
-
+            string proposition = tbInput.Text;
+            myTree.InsertTree(proposition);
+            tbOutputInfix.Text = myTree.DisplayInOrder();
         }
     }
 }

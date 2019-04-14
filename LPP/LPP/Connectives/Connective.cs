@@ -12,9 +12,9 @@ namespace LPP
         protected string _value;
 
         //constructor
-        public Connective()
+        public Connective(string value)
         {
-
+            this._value = value;
         }
 
         public string GetVal()
@@ -24,7 +24,7 @@ namespace LPP
 
         public override string ToString()
         {
-            return "";
+            return this._value;
         }
     }
 }

@@ -8,14 +8,6 @@ namespace LPP.Connectives
 {
     class Implication: Connective
     {
-        public Implication() : base()
-        {
-            this._value = ">";
-        }
-
-        public override string ToString()
-        {
-            return base.ToString() + this._value;
-        }
+        public Implication(string value) : base(value) { }
     }
 }
