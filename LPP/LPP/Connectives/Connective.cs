@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LPP.Connectives;
 
 namespace LPP
 {
-    abstract class Connective
+    abstract class Connective: Node
     {
         //field
         protected string _value;
@@ -20,6 +21,22 @@ namespace LPP
         public string GetVal()
         {
             return this._value;
+        }
+
+        public override string CalculateResult() { return ""; }
+
+        public override void DrawGraphHelper(ref string content)
+        {
+            if (this.LeftNode != null)
+            {
+                content += "node" + Index + " [ label = \"" + this.ToString() + "\" ]\r\n";
+                content += "node" + Index + " -- " + "node" + LeftNode.Index + "\r\n";
+            }
+            if (this.RightNode != null)
+            {
+                content += "node" + Index + " [ label = \"" + this.ToString() + "\" ]\r\n";
+                content += "node" + Index + " -- " + "node" + RightNode.Index + "\r\n";
+            }
         }
 
         public override string ToString()

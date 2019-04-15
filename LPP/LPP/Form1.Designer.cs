@@ -34,6 +34,9 @@
             this.lbInfix = new System.Windows.Forms.Label();
             this.btnDraw = new System.Windows.Forms.Button();
             this.tbTest = new System.Windows.Forms.TextBox();
+            this.dgvTruthTable = new System.Windows.Forms.DataGridView();
+            this.btnTruthTable = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTruthTable)).BeginInit();
             this.SuspendLayout();
             // 
             // btnRead
@@ -83,25 +86,47 @@
             // 
             // tbTest
             // 
-            this.tbTest.Location = new System.Drawing.Point(12, 229);
+            this.tbTest.Location = new System.Drawing.Point(322, 229);
             this.tbTest.Multiline = true;
             this.tbTest.Name = "tbTest";
-            this.tbTest.Size = new System.Drawing.Size(776, 209);
+            this.tbTest.Size = new System.Drawing.Size(466, 209);
             this.tbTest.TabIndex = 1;
+            // 
+            // dgvTruthTable
+            // 
+            this.dgvTruthTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTruthTable.Location = new System.Drawing.Point(12, 229);
+            this.dgvTruthTable.Name = "dgvTruthTable";
+            this.dgvTruthTable.Size = new System.Drawing.Size(270, 209);
+            this.dgvTruthTable.TabIndex = 3;
+            // 
+            // btnTruthTable
+            // 
+            this.btnTruthTable.Enabled = false;
+            this.btnTruthTable.Location = new System.Drawing.Point(12, 117);
+            this.btnTruthTable.Name = "btnTruthTable";
+            this.btnTruthTable.Size = new System.Drawing.Size(75, 23);
+            this.btnTruthTable.TabIndex = 0;
+            this.btnTruthTable.Text = "Truth Table";
+            this.btnTruthTable.UseVisualStyleBackColor = true;
+            this.btnTruthTable.Click += new System.EventHandler(this.btnTruthTable_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.dgvTruthTable);
             this.Controls.Add(this.lbInfix);
             this.Controls.Add(this.tbTest);
             this.Controls.Add(this.tbOutputInfix);
             this.Controls.Add(this.tbInput);
+            this.Controls.Add(this.btnTruthTable);
             this.Controls.Add(this.btnDraw);
             this.Controls.Add(this.btnRead);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTruthTable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -115,6 +140,8 @@
         private System.Windows.Forms.Label lbInfix;
         private System.Windows.Forms.Button btnDraw;
         private System.Windows.Forms.TextBox tbTest;
+        private System.Windows.Forms.DataGridView dgvTruthTable;
+        private System.Windows.Forms.Button btnTruthTable;
     }
 }
 

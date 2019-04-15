@@ -25,6 +25,7 @@ namespace LPP
         private void btnRead_Click(object sender, EventArgs e)
         {
             //enable button
+            btnTruthTable.Enabled = true;
             btnDraw.Enabled = true;
             //function
             string proposition = tbInput.Text;
@@ -43,6 +44,32 @@ namespace LPP
             dot.Start();
             dot.WaitForExit();
             Process.Start(@"tree.png");
+        }
+
+        private void btnTruthTable_Click(object sender, EventArgs e)
+        {
+            DataTable myTruthTable = new DataTable();
+            //set column
+            myTruthTable.Clear();
+            foreach(var v in myTree.GetVariableList())
+            {
+                myTruthTable.Columns.Add(v.ToString());
+            }
+            myTruthTable.Columns.Add(myTree.DisplayInOrder());
+            string[,] matrix = myTree.GetTruthTable();
+            //display table
+            for(int i = 0; i < matrix.GetLength(0); i++)
+            {
+                int columnPointer = 0;
+                DataRow currentRow = myTruthTable.NewRow();
+                foreach(var c in myTruthTable.Columns)
+                {
+                    currentRow[c.ToString()] = matrix[i, columnPointer];
+                    columnPointer++;
+                }
+                myTruthTable.Rows.Add(currentRow);
+            }
+            dgvTruthTable.DataSource = myTruthTable;
         }
     }
 }

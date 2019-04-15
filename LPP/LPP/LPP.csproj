@@ -70,6 +70,7 @@
     <Compile Include="Connectives\AndOperator.cs" />
     <Compile Include="Connectives\BiImplication.cs" />
     <Compile Include="Connectives\Connective.cs" />
+    <Compile Include="Connectives\ICalculateExpression.cs" />
     <Compile Include="Connectives\Implication.cs" />
     <Compile Include="Connectives\Negation.cs" />
     <Compile Include="Connectives\OrOperator.cs" />
@@ -80,6 +81,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="IProposition.cs" />
+    <Compile Include="MoreLinq\MoreEnumerable.DistinctBy.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

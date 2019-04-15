@@ -7,18 +7,29 @@ using LPP.Connectives;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Drawing;
+using MoreLinq;
 
 namespace LPP
 {
     class Tree
     {
         private Node _root;
-        Stack<Node> _myStack;
+        private Stack<Node> _myStack;
 
         public Tree()
         {
             this._root = null;
             this._myStack = new Stack<Node>();
+        }
+
+        //return unique variable list
+        public List<Variable> GetVariableList()
+        {
+            List<Variable> temp = new List<Variable>();
+            this.PopulateListOfVariable(this._root, ref temp);
+            // third party library, will try to do by myself
+            List<Variable> uniqueList = temp.DistinctBy(v => v.ToString()).ToList();
+            return uniqueList;
         }
 
         //remove parenthesis and comma
@@ -52,36 +63,36 @@ namespace LPP
             switch (c)
             {
                 case "&":
-                    n = new Node(new AndOperator(c));
+                    n = new AndOperator(c);
                     n.LeftNode = this._myStack.Pop();
                     n.RightNode = this._myStack.Pop();
                     this._myStack.Push(n);
                     break;
                 case "|":
-                    n = new Node(new OrOperator(c));
+                    n = new OrOperator(c);
                     n.LeftNode = this._myStack.Pop();
                     n.RightNode = this._myStack.Pop();
                     this._myStack.Push(n);
                     break;
                 case ">":
-                    n = new Node(new Implication(c));
+                    n = new Implication(c);
                     n.LeftNode = this._myStack.Pop();
                     n.RightNode = this._myStack.Pop();
                     this._myStack.Push(n);
                     break;
                 case "~":
-                    n = new Node(new Negation(c));
+                    n = new Negation(c);
                     n.RightNode = this._myStack.Pop();
                     this._myStack.Push(n);
                     break;
                 case "=":
-                    n = new Node(new BiImplication(c));
+                    n = new BiImplication(c);
                     n.LeftNode = this._myStack.Pop();
                     n.RightNode = this._myStack.Pop();
                     this._myStack.Push(n);
                     break;
                 default:
-                    n = new Node(new Variable(c));
+                    n = new Variable(c);
                     this._myStack.Push(n);
                     break;
             }
@@ -137,6 +148,77 @@ namespace LPP
                 index++;
                 this.SetIndexHelper(root.LeftNode, ref index);
                 this.SetIndexHelper(root.RightNode, ref index);
+            }
+        }
+
+        // get matrix 
+        public string[,] GetTruthTable()
+        {
+            List<Variable> temp = this.GetVariableList();
+            temp.Sort();
+            int totalVariable = temp.Count;
+            string result = "";
+            // create matrix with row = 2 ^ n, and column = n + 1(n = totalVariable)
+            int rows = Convert.ToInt32(Math.Pow(2, totalVariable));
+            string[,] matrix = new string[rows, totalVariable + 1];
+            for(int i = 0; i < rows; i++)
+            {
+                string needValue = this.ConvertToBinary(i, temp.Count);
+                for (int j = 0; j < totalVariable; j++)
+                {
+                    matrix[i, j] = needValue[j].ToString();
+                    temp[j].TruthValue = needValue[j].ToString();
+                }
+                this.CalculateLogicExpressionHelper(this._root, ref result);
+                matrix[i, matrix.GetLength(1) - 1] = result;
+            }
+            return matrix;
+        }
+
+        // convert to binary
+        private string ConvertToBinary(int inputNo, int maxNo)
+        {
+            char[] binaryNo = new char[maxNo];
+            string convertBinary = Convert.ToString(inputNo, 2);
+            int index = convertBinary.Length - 1;
+            for(int i = maxNo - 1; i >= 0; i--)
+            {
+                if(index >= 0)
+                {
+                    binaryNo[i] = convertBinary[index];
+                    index--;
+                }
+                else
+                {
+                    binaryNo[i] = '0';
+                }
+            }
+            return new string(binaryNo);
+        }
+        //using post order to calculate
+        private string CalculateLogicExpressionHelper(Node root, ref string result)
+        {
+            if(root != null)
+            {
+                this.CalculateLogicExpressionHelper(root.LeftNode, ref result);
+                this.CalculateLogicExpressionHelper(root.RightNode, ref result);
+                result = root.CalculateResult();
+            }
+            return result;
+        }
+
+        //populate list of varible including the same variable
+        private void PopulateListOfVariable(Node root, ref List<Variable> variableList)
+        {
+            //tranverse through the tree using post-order
+            if(root != null)
+            {
+                if(root is Variable v)
+                {
+                    variableList.Add(v);
+                }
+                this.PopulateListOfVariable(root.LeftNode, ref variableList);
+                this.PopulateListOfVariable(root.RightNode, ref variableList);
             }
         }
     }

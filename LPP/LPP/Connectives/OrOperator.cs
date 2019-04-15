@@ -9,5 +9,14 @@ namespace LPP.Connectives
     class OrOperator: Connective
     {
         public OrOperator(string value) : base(value) { }
+
+        public override string CalculateResult()
+        {
+            if(this.LeftNode.TruthValue == "0" && this.RightNode.TruthValue == "0")
+            {
+                return "0";
+            }
+            return "1";
+        }
     }
 }

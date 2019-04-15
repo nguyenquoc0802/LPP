@@ -7,13 +7,14 @@ using LPP.Connectives;
 
 namespace LPP
 {
-    class Node
+    class Node: ICalculateExpression
     {
         //field
+        //might have method to set node privately
         public Node LeftNode { get; set; }
         public Node RightNode { get; set; }
-        public Connective Connective { get; set; }
-        public Variable Variable { get; set; }
+        public string TruthValue { get; set; }
+
         public int Index { get; set; }
 
         public Node()
@@ -22,48 +23,9 @@ namespace LPP
             this.RightNode = null;
         }
 
-        public Node(Connective connective): base()
-        {
-            this.Connective = connective;
-        }
-
-        public Node(Variable variable)
-        {
-            this.Variable = variable;
-        }
+        public virtual string CalculateResult() { return ""; }
 
         //each node have different implementation
-        public void DrawGraphHelper(ref string content)
-        {
-            if(this.Connective != null)
-            {
-                if(this.LeftNode != null)
-                {
-                    content += "node" + Index + " [ label = \"" + this.ToString() + "\" ]\r\n";
-                    content += "node" + Index + " -- " + "node" + LeftNode.Index + "\r\n";
-                }
-                if(this.RightNode != null)
-                {
-                    content += "node" + Index + " [ label = \"" + this.ToString() + "\" ]\r\n";
-                    content += "node" + Index + " -- " + "node" + RightNode.Index + "\r\n";
-                }
-            }
-            else
-            {
-                content += "node" + this.Index + " [ label = \"" + this.ToString() + "\" ]\r\n";
-            }
-        }
-
-        public override string ToString()
-        {
-            if(this.Connective != null)
-            {
-                return Connective.ToString();
-            }
-            else
-            {
-                return Variable.ToString();
-            }
-        }
+        public virtual void DrawGraphHelper(ref string content) { }
     }
 }
