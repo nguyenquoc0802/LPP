@@ -97,7 +97,7 @@
             this.dgvTruthTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTruthTable.Location = new System.Drawing.Point(12, 229);
             this.dgvTruthTable.Name = "dgvTruthTable";
-            this.dgvTruthTable.Size = new System.Drawing.Size(270, 209);
+            this.dgvTruthTable.Size = new System.Drawing.Size(293, 209);
             this.dgvTruthTable.TabIndex = 3;
             // 
             // btnTruthTable
