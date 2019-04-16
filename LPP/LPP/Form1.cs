@@ -51,7 +51,7 @@ namespace LPP
             DataTable myTruthTable = new DataTable();
             //set column
             myTruthTable.Clear();
-            foreach(var v in myTree.GetVariableList())
+            foreach(var v in myTree.GetUniqueVariableList())
             {
                 myTruthTable.Columns.Add(v.ToString());
             }
@@ -70,6 +70,14 @@ namespace LPP
                 myTruthTable.Rows.Add(currentRow);
             }
             dgvTruthTable.DataSource = myTruthTable;
+        }
+
+        private void SortColumn(DataTable dt)
+        {
+            foreach(var n in dt.Columns)
+            {
+                
+            }
         }
     }
 }

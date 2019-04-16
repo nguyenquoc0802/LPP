@@ -14,7 +14,6 @@ namespace LPP
         public Node LeftNode { get; set; }
         public Node RightNode { get; set; }
         public string TruthValue { get; set; }
-
         public int Index { get; set; }
 
         public Node()

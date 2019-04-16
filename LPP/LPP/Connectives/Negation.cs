@@ -14,9 +14,14 @@ namespace LPP.Connectives
         {
             if(this.RightNode.TruthValue == "0")
             {
-                return "1";
+                return this.TruthValue = "1";
             }
-            return "0";
+            return this.TruthValue = "0";
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}{1}", this._value, this.RightNode); 
         }
     }
 }

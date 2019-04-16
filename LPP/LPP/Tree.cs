@@ -23,13 +23,20 @@ namespace LPP
         }
 
         //return unique variable list
-        public List<Variable> GetVariableList()
+        public List<Variable> GetUniqueVariableList()
         {
             List<Variable> temp = new List<Variable>();
             this.PopulateListOfVariable(this._root, ref temp);
             // third party library, will try to do by myself
             List<Variable> uniqueList = temp.DistinctBy(v => v.ToString()).ToList();
             return uniqueList;
+        }
+
+        private List<Variable> GetVariableList()
+        {
+            List<Variable> temp = new List<Variable>();
+            this.PopulateListOfVariable(this._root, ref temp);
+            return temp;
         }
 
         //remove parenthesis and comma
@@ -101,21 +108,7 @@ namespace LPP
         //display
         public string DisplayInOrder()
         {
-            string display = "";
-            return this.DisplayInOrderHelper(this._root, ref display);
-        }
-
-        private string DisplayInOrderHelper(Node root, ref string display)
-        {
-            if (root != null)
-            {
-                display += "(";
-                this.DisplayInOrderHelper(root.LeftNode, ref display);
-                display += " " + root + " ";
-                this.DisplayInOrderHelper(root.RightNode, ref display);
-                display += ")";
-            }
-            return display;
+            return _root.ToString();
         }
 
         //draw Tree
@@ -154,8 +147,9 @@ namespace LPP
         // get matrix 
         public string[,] GetTruthTable()
         {
-            List<Variable> temp = this.GetVariableList();
-            temp.Sort();
+            List<Variable> temp = this.GetUniqueVariableList();
+            // all node in case of matching node and in the order from left to right
+            List<Variable> allNode = this.GetVariableList();
             int totalVariable = temp.Count;
             string result = "";
             // create matrix with row = 2 ^ n, and column = n + 1(n = totalVariable)
@@ -167,7 +161,14 @@ namespace LPP
                 for (int j = 0; j < totalVariable; j++)
                 {
                     matrix[i, j] = needValue[j].ToString();
-                    temp[j].TruthValue = needValue[j].ToString();
+                    // check if there is any matching node and set truth value to them
+                    foreach(var c in allNode)
+                    {
+                        if(c.ToString() == temp[j].ToString())
+                        {
+                            c.TruthValue = needValue[j].ToString();
+                        }
+                    }
                 }
                 this.CalculateLogicExpressionHelper(this._root, ref result);
                 matrix[i, matrix.GetLength(1) - 1] = result;
@@ -196,7 +197,7 @@ namespace LPP
             return new string(binaryNo);
         }
         //using post order to calculate
-        private string CalculateLogicExpressionHelper(Node root, ref string result)
+        private void CalculateLogicExpressionHelper(Node root, ref string result)
         {
             if(root != null)
             {
@@ -204,13 +205,12 @@ namespace LPP
                 this.CalculateLogicExpressionHelper(root.RightNode, ref result);
                 result = root.CalculateResult();
             }
-            return result;
         }
 
         //populate list of varible including the same variable
         private void PopulateListOfVariable(Node root, ref List<Variable> variableList)
         {
-            //tranverse through the tree using post-order
+            //tranverse through the tree using pre-order
             if(root != null)
             {
                 if(root is Variable v)

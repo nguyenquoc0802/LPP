@@ -29,19 +29,19 @@ namespace LPP
         {
             if (this.LeftNode != null)
             {
-                content += "node" + Index + " [ label = \"" + this.ToString() + "\" ]\r\n";
+                content += "node" + Index + " [ label = \"" + this.GetVal() + "\" ]\r\n";
                 content += "node" + Index + " -- " + "node" + LeftNode.Index + "\r\n";
             }
             if (this.RightNode != null)
             {
-                content += "node" + Index + " [ label = \"" + this.ToString() + "\" ]\r\n";
+                content += "node" + Index + " [ label = \"" + this.GetVal() + "\" ]\r\n";
                 content += "node" + Index + " -- " + "node" + RightNode.Index + "\r\n";
             }
         }
 
         public override string ToString()
         {
-            return this._value;
+            return "";
         }
     }
 }
