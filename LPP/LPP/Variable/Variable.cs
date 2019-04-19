@@ -10,7 +10,6 @@ namespace LPP
     {
         //field
         private string _name;
-        private bool _value;
 
         //constructor
         public Variable(string name)
@@ -28,7 +27,7 @@ namespace LPP
             return this._name.CompareTo(other._name);
         }
 
-        public override string CalculateResult()
+        public override bool CalculateResult()
         {
             return this.TruthValue;
         }

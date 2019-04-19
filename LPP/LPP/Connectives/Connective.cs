@@ -23,7 +23,7 @@ namespace LPP
             return this._value;
         }
 
-        public override string CalculateResult() { return ""; }
+        public override bool CalculateResult() { return true; }
 
         public override void DrawGraphHelper(ref string content)
         {

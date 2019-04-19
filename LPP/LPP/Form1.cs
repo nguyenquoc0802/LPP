@@ -48,36 +48,8 @@ namespace LPP
 
         private void btnTruthTable_Click(object sender, EventArgs e)
         {
-            DataTable myTruthTable = new DataTable();
-            //set column
-            myTruthTable.Clear();
-            foreach(var v in myTree.GetUniqueVariableList())
-            {
-                myTruthTable.Columns.Add(v.ToString());
-            }
-            myTruthTable.Columns.Add(myTree.DisplayInOrder());
-            string[,] matrix = myTree.GetTruthTable();
-            //display table
-            for(int i = 0; i < matrix.GetLength(0); i++)
-            {
-                int columnPointer = 0;
-                DataRow currentRow = myTruthTable.NewRow();
-                foreach(var c in myTruthTable.Columns)
-                {
-                    currentRow[c.ToString()] = matrix[i, columnPointer];
-                    columnPointer++;
-                }
-                myTruthTable.Rows.Add(currentRow);
-            }
-            dgvTruthTable.DataSource = myTruthTable;
-        }
-
-        private void SortColumn(DataTable dt)
-        {
-            foreach(var n in dt.Columns)
-            {
-                
-            }
+            TruthTable myTruthTable = new TruthTable(myTree.GetRoot());
+            tbTruthTable.Text = myTruthTable.GetTableInString();
         }
     }
 }

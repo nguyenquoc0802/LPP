@@ -8,6 +8,6 @@ namespace LPP.Connectives
 {
     interface ICalculateExpression
     {
-        string CalculateResult();
+        bool CalculateResult();
     }
 }

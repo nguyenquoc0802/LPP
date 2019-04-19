@@ -10,13 +10,9 @@ namespace LPP.Connectives
     {
         public OrOperator(string value) : base(value) { }
 
-        public override string CalculateResult()
+        public override bool CalculateResult()
         {
-            if(this.LeftNode.TruthValue == "0" && this.RightNode.TruthValue == "0")
-            {
-                return this.TruthValue = "0";
-            }
-            return this.TruthValue = "1";
+            return this.TruthValue = (this.RightNode.TruthValue | this.LeftNode.TruthValue);
         }
 
         public override string ToString()

@@ -10,13 +10,13 @@ namespace LPP.Connectives
     {
         public Implication(string value) : base(value) { }
 
-        public override string CalculateResult()
+        public override bool CalculateResult()
         {
-            if(this.LeftNode.TruthValue == "1" && this.RightNode.TruthValue == "0")
+            if(this.LeftNode.TruthValue == true && this.RightNode.TruthValue == false)
             {
-                return this.TruthValue = "0";
+                return this.TruthValue = false;
             }
-            return this.TruthValue = "1";
+            return this.TruthValue = true;
         }
 
         public override string ToString()

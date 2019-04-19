@@ -13,7 +13,7 @@ namespace LPP
         //might have method to set node privately
         public Node LeftNode { get; set; }
         public Node RightNode { get; set; }
-        public string TruthValue { get; set; }
+        public bool TruthValue { get; set; }
         public int Index { get; set; }
 
         public Node()
@@ -22,7 +22,7 @@ namespace LPP
             this.RightNode = null;
         }
 
-        public virtual string CalculateResult() { return ""; }
+        public virtual bool CalculateResult() { return true; }
 
         //each node have different implementation
         public virtual void DrawGraphHelper(ref string content) { }

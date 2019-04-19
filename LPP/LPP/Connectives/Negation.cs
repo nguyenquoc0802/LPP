@@ -10,13 +10,13 @@ namespace LPP.Connectives
     {
         public Negation(string value) : base(value) { }
 
-        public override string CalculateResult()
+        public override bool CalculateResult()
         {
-            if(this.RightNode.TruthValue == "0")
+            if(this.RightNode.TruthValue == false)
             {
-                return this.TruthValue = "1";
+                return this.TruthValue = true;
             }
-            return this.TruthValue = "0";
+            return this.TruthValue = false;
         }
 
         public override string ToString()
