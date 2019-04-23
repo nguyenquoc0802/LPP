@@ -26,6 +26,7 @@ namespace LPP
         {
             //enable button
             btnDraw.Enabled = true;
+            btnSimplify.Enabled = true;
             //function
             string proposition = tbInput.Text;
             myTree.InsertTree(proposition);
@@ -46,6 +47,13 @@ namespace LPP
             dot.Start();
             dot.WaitForExit();
             Process.Start(@"tree.png");
+        }
+
+        private void btnSimplify_Click(object sender, EventArgs e)
+        {
+            tbTruthTable.Text = "";
+            TruthTable myTruthTable = new TruthTable(myTree.GetRoot());
+            tbTruthTable.Text = myTruthTable.MinimizeTruthTable();
         }
     }
 }

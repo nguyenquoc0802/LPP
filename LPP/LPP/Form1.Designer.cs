@@ -36,6 +36,7 @@
             this.tbTest = new System.Windows.Forms.TextBox();
             this.tbTruthTable = new System.Windows.Forms.TextBox();
             this.tbHashCode = new System.Windows.Forms.TextBox();
+            this.btnSimplify = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnRead
@@ -75,7 +76,7 @@
             // btnDraw
             // 
             this.btnDraw.Enabled = false;
-            this.btnDraw.Location = new System.Drawing.Point(15, 81);
+            this.btnDraw.Location = new System.Drawing.Point(12, 81);
             this.btnDraw.Name = "btnDraw";
             this.btnDraw.Size = new System.Drawing.Size(75, 23);
             this.btnDraw.TabIndex = 0;
@@ -108,6 +109,17 @@
             this.tbHashCode.Size = new System.Drawing.Size(121, 20);
             this.tbHashCode.TabIndex = 1;
             // 
+            // btnSimplify
+            // 
+            this.btnSimplify.Enabled = false;
+            this.btnSimplify.Location = new System.Drawing.Point(12, 121);
+            this.btnSimplify.Name = "btnSimplify";
+            this.btnSimplify.Size = new System.Drawing.Size(75, 23);
+            this.btnSimplify.TabIndex = 0;
+            this.btnSimplify.Text = "Simplify";
+            this.btnSimplify.UseVisualStyleBackColor = true;
+            this.btnSimplify.Click += new System.EventHandler(this.btnSimplify_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -120,6 +132,7 @@
             this.Controls.Add(this.tbOutputInfix);
             this.Controls.Add(this.tbInput);
             this.Controls.Add(this.btnDraw);
+            this.Controls.Add(this.btnSimplify);
             this.Controls.Add(this.btnRead);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -138,6 +151,7 @@
         private System.Windows.Forms.TextBox tbTest;
         private System.Windows.Forms.TextBox tbTruthTable;
         private System.Windows.Forms.TextBox tbHashCode;
+        private System.Windows.Forms.Button btnSimplify;
     }
 }
 
