@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace LPP
@@ -40,11 +41,19 @@ namespace LPP
             return lastLine;
         }
 
-        public static string GetTruthTableHashCode(List<MyCustomizeColumn> tempList)
+        public static string ConvertBigBinaryToHex(List<MyCustomizeColumn> tempList)
         {
-            string bitArray = HashCodeHelper(tempList);
-            string strHex = Convert.ToInt32(bitArray, 2).ToString("X");
-            return strHex;
+            string bigBinary = HashCodeHelper(tempList);
+            int rest = bigBinary.Length % 4;
+            bigBinary = bigBinary.PadLeft(rest, '0'); //pad the length out to by divideable by 4
+
+            string output = "";
+
+            for (int i = 0; i <= bigBinary.Length - 4; i += 4)
+            {  
+                output += Convert.ToInt32(bigBinary.Substring(i, 4), 2).ToString("X");
+            }
+            return output;
         }
 
         //compare two binary and produce new binary with * as a bit if necessary

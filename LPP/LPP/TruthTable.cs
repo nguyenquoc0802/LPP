@@ -169,7 +169,7 @@ namespace LPP
         //convert binary to hexadecimal number
         public string GetTruthTableHashCode()
         {
-            return FunctionHelper.GetTruthTableHashCode(this.PopulateColumn());
+            return FunctionHelper.ConvertBigBinaryToHex(this.PopulateColumn());
         }
 
         //get different with 1 and 0
@@ -240,19 +240,17 @@ namespace LPP
                 //true output list
                 if(nextListTrue.Count > 0)
                 {
-                    trueOutputList = nextListTrue;
+                    trueOutputList = nextListTrue.Distinct().ToList();
                     tempTrue = trueOutputList;
                 }
 
                 //fasle output list
                 if(nextListFalse.Count > 0)
                 {
-                    falseOutputList = nextListFalse;
+                    falseOutputList = nextListFalse.Distinct().ToList();
                     tempFalse = falseOutputList;
                 }
             }
-            trueOutputList = trueOutputList.Distinct().ToList();
-            falseOutputList = falseOutputList.Distinct().ToList();
         }
 
         public string MinimizeTruthTable()

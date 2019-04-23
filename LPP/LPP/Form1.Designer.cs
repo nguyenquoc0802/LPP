@@ -33,7 +33,6 @@
             this.tbOutputInfix = new System.Windows.Forms.TextBox();
             this.lbInfix = new System.Windows.Forms.Label();
             this.btnDraw = new System.Windows.Forms.Button();
-            this.tbTest = new System.Windows.Forms.TextBox();
             this.tbTruthTable = new System.Windows.Forms.TextBox();
             this.tbHashCode = new System.Windows.Forms.TextBox();
             this.btnSimplify = new System.Windows.Forms.Button();
@@ -84,14 +83,6 @@
             this.btnDraw.UseVisualStyleBackColor = true;
             this.btnDraw.Click += new System.EventHandler(this.btnDraw_Click);
             // 
-            // tbTest
-            // 
-            this.tbTest.Location = new System.Drawing.Point(313, 229);
-            this.tbTest.Multiline = true;
-            this.tbTest.Name = "tbTest";
-            this.tbTest.Size = new System.Drawing.Size(475, 209);
-            this.tbTest.TabIndex = 1;
-            // 
             // tbTruthTable
             // 
             this.tbTruthTable.BackColor = System.Drawing.Color.White;
@@ -99,7 +90,8 @@
             this.tbTruthTable.Multiline = true;
             this.tbTruthTable.Name = "tbTruthTable";
             this.tbTruthTable.ReadOnly = true;
-            this.tbTruthTable.Size = new System.Drawing.Size(262, 209);
+            this.tbTruthTable.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbTruthTable.Size = new System.Drawing.Size(773, 209);
             this.tbTruthTable.TabIndex = 3;
             // 
             // tbHashCode
@@ -127,7 +119,6 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tbTruthTable);
             this.Controls.Add(this.lbInfix);
-            this.Controls.Add(this.tbTest);
             this.Controls.Add(this.tbHashCode);
             this.Controls.Add(this.tbOutputInfix);
             this.Controls.Add(this.tbInput);
@@ -148,7 +139,6 @@
         private System.Windows.Forms.TextBox tbOutputInfix;
         private System.Windows.Forms.Label lbInfix;
         private System.Windows.Forms.Button btnDraw;
-        private System.Windows.Forms.TextBox tbTest;
         private System.Windows.Forms.TextBox tbTruthTable;
         private System.Windows.Forms.TextBox tbHashCode;
         private System.Windows.Forms.Button btnSimplify;

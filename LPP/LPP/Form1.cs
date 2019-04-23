@@ -39,7 +39,6 @@ namespace LPP
         private void btnDraw_Click(object sender, EventArgs e)
         {
             string content = myTree.DrawTree();
-            tbTest.Text = content;
             File.WriteAllText(@"tree.dot", content);
             Process dot = new Process();
             dot.StartInfo.FileName = @".\External\dot.exe";
