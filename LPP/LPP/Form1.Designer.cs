@@ -34,8 +34,8 @@
             this.lbInfix = new System.Windows.Forms.Label();
             this.btnDraw = new System.Windows.Forms.Button();
             this.tbTest = new System.Windows.Forms.TextBox();
-            this.btnTruthTable = new System.Windows.Forms.Button();
             this.tbTruthTable = new System.Windows.Forms.TextBox();
+            this.tbHashCode = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnRead
@@ -52,14 +52,14 @@
             // 
             this.tbInput.Location = new System.Drawing.Point(121, 12);
             this.tbInput.Name = "tbInput";
-            this.tbInput.Size = new System.Drawing.Size(636, 20);
+            this.tbInput.Size = new System.Drawing.Size(540, 20);
             this.tbInput.TabIndex = 1;
             // 
             // tbOutputInfix
             // 
             this.tbOutputInfix.Location = new System.Drawing.Point(121, 48);
             this.tbOutputInfix.Name = "tbOutputInfix";
-            this.tbOutputInfix.Size = new System.Drawing.Size(636, 20);
+            this.tbOutputInfix.Size = new System.Drawing.Size(667, 20);
             this.tbOutputInfix.TabIndex = 1;
             // 
             // lbInfix
@@ -75,7 +75,7 @@
             // btnDraw
             // 
             this.btnDraw.Enabled = false;
-            this.btnDraw.Location = new System.Drawing.Point(12, 88);
+            this.btnDraw.Location = new System.Drawing.Point(15, 81);
             this.btnDraw.Name = "btnDraw";
             this.btnDraw.Size = new System.Drawing.Size(75, 23);
             this.btnDraw.TabIndex = 0;
@@ -91,17 +91,6 @@
             this.tbTest.Size = new System.Drawing.Size(475, 209);
             this.tbTest.TabIndex = 1;
             // 
-            // btnTruthTable
-            // 
-            this.btnTruthTable.Enabled = false;
-            this.btnTruthTable.Location = new System.Drawing.Point(12, 117);
-            this.btnTruthTable.Name = "btnTruthTable";
-            this.btnTruthTable.Size = new System.Drawing.Size(75, 23);
-            this.btnTruthTable.TabIndex = 0;
-            this.btnTruthTable.Text = "Truth Table";
-            this.btnTruthTable.UseVisualStyleBackColor = true;
-            this.btnTruthTable.Click += new System.EventHandler(this.btnTruthTable_Click);
-            // 
             // tbTruthTable
             // 
             this.tbTruthTable.BackColor = System.Drawing.Color.White;
@@ -112,6 +101,13 @@
             this.tbTruthTable.Size = new System.Drawing.Size(262, 209);
             this.tbTruthTable.TabIndex = 3;
             // 
+            // tbHashCode
+            // 
+            this.tbHashCode.Location = new System.Drawing.Point(667, 12);
+            this.tbHashCode.Name = "tbHashCode";
+            this.tbHashCode.Size = new System.Drawing.Size(121, 20);
+            this.tbHashCode.TabIndex = 1;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -120,9 +116,9 @@
             this.Controls.Add(this.tbTruthTable);
             this.Controls.Add(this.lbInfix);
             this.Controls.Add(this.tbTest);
+            this.Controls.Add(this.tbHashCode);
             this.Controls.Add(this.tbOutputInfix);
             this.Controls.Add(this.tbInput);
-            this.Controls.Add(this.btnTruthTable);
             this.Controls.Add(this.btnDraw);
             this.Controls.Add(this.btnRead);
             this.Name = "Form1";
@@ -140,8 +136,8 @@
         private System.Windows.Forms.Label lbInfix;
         private System.Windows.Forms.Button btnDraw;
         private System.Windows.Forms.TextBox tbTest;
-        private System.Windows.Forms.Button btnTruthTable;
         private System.Windows.Forms.TextBox tbTruthTable;
+        private System.Windows.Forms.TextBox tbHashCode;
     }
 }
 

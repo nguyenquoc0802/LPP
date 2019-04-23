@@ -25,12 +25,14 @@ namespace LPP
         private void btnRead_Click(object sender, EventArgs e)
         {
             //enable button
-            btnTruthTable.Enabled = true;
             btnDraw.Enabled = true;
             //function
             string proposition = tbInput.Text;
             myTree.InsertTree(proposition);
             tbOutputInfix.Text = myTree.DisplayInOrder();
+            TruthTable myTruthTable = new TruthTable(myTree.GetRoot());
+            tbTruthTable.Text = myTruthTable.GetTableInString();
+            tbHashCode.Text = myTruthTable.GetTruthTableHashCode();
         }
 
         private void btnDraw_Click(object sender, EventArgs e)
@@ -44,12 +46,6 @@ namespace LPP
             dot.Start();
             dot.WaitForExit();
             Process.Start(@"tree.png");
-        }
-
-        private void btnTruthTable_Click(object sender, EventArgs e)
-        {
-            TruthTable myTruthTable = new TruthTable(myTree.GetRoot());
-            tbTruthTable.Text = myTruthTable.GetTableInString();
         }
     }
 }

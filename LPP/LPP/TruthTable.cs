@@ -82,12 +82,12 @@ namespace LPP
             }
         }
 
-        // get matrix 
+        // get matrix in form of 1 and 0 which is shown in the table
         public string[,] GetTruthTableMatrix()
         {
             List<Variable> temp = this.GetUniqueVariableList();
             // all node in case of matching node and in the order from left to right
-            List<Variable> allNode = this.GetVariableList();
+            List<Variable> allVariableNode = this.GetVariableList();
             int totalVariable = temp.Count;
             bool result = false;
             // create matrix with row = 2 ^ n, and column = n + 1(n = totalVariable)
@@ -100,7 +100,7 @@ namespace LPP
                 {
                     matrix[i, j] = needValue[j].ToString();
                     // check if there is any matching node and set truth value to them
-                    foreach (var c in allNode)
+                    foreach (var c in allVariableNode)
                     {
                         if (c.ToString() == temp[j].ToString())
                         {
@@ -128,46 +128,49 @@ namespace LPP
             return matrix;
         }
 
-        private void PopulateColumn()
+        private List<MyCustomizeColumn> PopulateColumn()
         {
             string[,] matrix = this.GetTruthTableMatrix();
             List<Variable> temp = this.GetUniqueVariableList();
+            List<MyCustomizeColumn> tempColumnList = new List<MyCustomizeColumn>();
             foreach(var v in temp)
             {
                 MyCustomizeColumn newColumnVariable = new MyCustomizeColumn(v.ToString());
-                this._columnList.Add(newColumnVariable);
+                tempColumnList.Add(newColumnVariable);
             }
             //add proposition
             MyCustomizeColumn newColumn = new MyCustomizeColumn(this._root.ToString());
-            this._columnList.Add(newColumn);
+            tempColumnList.Add(newColumn);
             for(int column = 0; column < matrix.GetLength(1); column++)
             {
                 for(int row = 0; row < matrix.GetLength(0); row++)
                 {
-                    this._columnList[column].AddRow(matrix[row, column]);
+                    tempColumnList[column].AddRow(matrix[row, column]);
                 }
             }
-            this._columnList.Sort();
-            this.MyCustomizeSort();
+            tempColumnList.Sort();
+            this.MyCustomizeSort(tempColumnList);
+            return tempColumnList;
         }
 
-        private void MyCustomizeSort()
+        private void MyCustomizeSort(List<MyCustomizeColumn> l)
         {
-            for(int i = 0; i < this._columnList.Count - 1; i++)
+            for(int i = 0; i < l.Count - 1; i++)
             {
-                MyCustomizeColumn temp = this._columnList[i];
-                this._columnList[i] = this._columnList[i + 1];
-                this._columnList[i + 1] = temp;
+                MyCustomizeColumn temp = l[i];
+                l[i] = l[i + 1];
+                l[i + 1] = temp;
             }
         }
 
         public string GetTableInString()
         {
-            this.PopulateColumn();
+            List<MyCustomizeColumn> tempColumnList = new List<MyCustomizeColumn>();
+            tempColumnList = this.PopulateColumn();
             string display = "";
-            for(int i = -1; i < this._columnList[0].GetRows().Count; i++)
+            for(int i = -1; i < tempColumnList[0].GetRows().Count; i++)
             {
-                foreach (var c in this._columnList)
+                foreach (var c in tempColumnList)
                 {
                     if(i == -1)
                     {
@@ -181,6 +184,24 @@ namespace LPP
                 display += "\r\n";
             }
             return display;
+        }
+
+        private string HashCodeHelper()
+        {
+            string lastLine = "";
+            List<MyCustomizeColumn> tempList = this.PopulateColumn();
+            for (int i = tempList[0].GetRows().Count - 1; i >= 0; i--)
+            {
+                lastLine += tempList[tempList.Count - 1].GetRows()[i];
+            }
+            return lastLine;
+        }
+
+        public string GetTruthTableHashCode()
+        {
+            string bitArray = this.HashCodeHelper();
+            string strHex = Convert.ToInt32(bitArray, 2).ToString("X");
+            return strHex;
         }
     }
 } 
