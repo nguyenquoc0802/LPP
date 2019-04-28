@@ -26,7 +26,7 @@ namespace LPP
         {
             //enable button
             btnDraw.Enabled = true;
-            btnSimplify.Enabled = true;
+            btnReadDisjunction.Enabled = true;
             //function
             string proposition = tbInput.Text;
             myTree.InsertTree(proposition);
@@ -34,6 +34,10 @@ namespace LPP
             TruthTable myTruthTable = new TruthTable(myTree.GetRoot());
             tbTruthTable.Text = myTruthTable.GetTableInString();
             tbHashCode.Text = myTruthTable.GetTruthTableHashCode();
+            //show disjunctive normal form
+            tbDisjunctiveNormalForm.Text = myTruthTable.DisjunctiveNormalForm();
+            tbSimplified.Text = myTruthTable.MinimizeTruthTable();
+            tbSimplifiedDisjunction.Text = myTruthTable.SimplifiedTableDisjunctiveForm();
         }
 
         private void btnDraw_Click(object sender, EventArgs e)
@@ -48,10 +52,14 @@ namespace LPP
             Process.Start(@"tree.png");
         }
 
-        private void btnSimplify_Click(object sender, EventArgs e)
+        private void btnReadDisjunction_Click(object sender, EventArgs e)
         {
+            string prefixForm = myTree.InfixToPrefix(tbDisjunctiveNormalForm.Text);
+            myTree.InsertTree(prefixForm);
+            tbOutputInfix.Text = myTree.DisplayInOrder();
             TruthTable myTruthTable = new TruthTable(myTree.GetRoot());
-            tbTruthTable.Text = myTruthTable.MinimizeTruthTable();
+            tbTruthTable.Text = myTruthTable.GetTableInString();
+            tbHashCode.Text = myTruthTable.GetTruthTableHashCode();
         }
     }
 }

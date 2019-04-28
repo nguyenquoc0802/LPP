@@ -9,12 +9,14 @@ namespace LPP
     class MyCustomizeColumn: IComparable<MyCustomizeColumn> 
     {
         private string _name;
-        private List<string> _row;
+        private List<bool> _row;
+        private List<string> _stringRow;
 
         public MyCustomizeColumn(string name)
         {
             this._name = name;
-            this._row = new List<string>();
+            this._row = new List<bool>();
+            this._stringRow = new List<string>();
         }
 
         public string GetName()
@@ -22,14 +24,29 @@ namespace LPP
             return this._name;
         }
 
-        public List<string> GetRows()
+        public List<bool> GetRows()
         {
             return this._row;
         }
 
-        public void AddRow(string s)
+        public List<string> GetStringRows()
         {
-            this._row.Add(s);
+            return this._stringRow;
+        }
+
+        public void AddRow(bool v)
+        {
+            this._row.Add(v);
+        }
+
+        public void AddStringRow(string s)
+        {
+            this._stringRow.Add(s);
+        }
+
+        public void ClearRow()
+        {
+            this._row.Clear();
         }
 
         public int CompareTo(MyCustomizeColumn other)

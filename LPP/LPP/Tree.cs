@@ -27,17 +27,10 @@ namespace LPP
             return this._root;
         }
 
-        //remove parenthesis and comma
-        private string TrimInputPropositions(string inputProposition)
-        {
-            Regex pattern = new Regex("[,()]");
-            char[] result = pattern.Replace(inputProposition, string.Empty).Where(c => !char.IsWhiteSpace(c)).ToArray();
-            return new string(result);
-        }
         //create tree node
         public void InsertTree(string inputProposition)
         {
-            string prefixPropositions = this.TrimInputPropositions(inputProposition);
+            string prefixPropositions = FunctionHelper.TrimInputPropositions(inputProposition);
             for(int i = prefixPropositions.Length - 1; i >= 0; i--)
             {
                 if(i == 0)
@@ -52,6 +45,7 @@ namespace LPP
                 }
             }
         }
+
         // help with creating binary tree
         private void InsertTreeHelper(ref Node n, string c)
         {
@@ -130,6 +124,51 @@ namespace LPP
                 this.SetIndexHelper(root.LeftNode, ref index);
                 this.SetIndexHelper(root.RightNode, ref index);
             }
+        }
+
+        //help converse to prefix by convert reversed infix to postfix form
+        private string InfixToPrefixHelper(string str1)
+        {
+            Stack<string> myStack = new Stack<string>();
+            string result = "";
+            string infix = FunctionHelper.TrimInputPropositions(str1);
+            string reverseInfix = FunctionHelper.ReverseString(infix);
+            for(int i = 0; i < reverseInfix.Length; i++)
+            {
+                if(FunctionHelper.IsOperator(reverseInfix[i].ToString()))
+                {
+                    while(myStack.Count > 0)
+                    {
+                        if(FunctionHelper.PriorityDeterminer(myStack.Peek()) >= FunctionHelper.PriorityDeterminer(reverseInfix[i].ToString()))
+                        {
+                            result += myStack.Pop();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    myStack.Push(reverseInfix[i].ToString());
+                }
+                else
+                {
+                    result += reverseInfix[i].ToString();
+                }
+            }
+            //remaining operator in the stack
+            while(myStack.Count > 0)
+            {
+                result += myStack.Pop();
+            }
+            return result;
+        }
+
+        //infix to prefix
+        public string InfixToPrefix(string str1)
+        {
+            string reverse = this.InfixToPrefixHelper(str1);
+            string result = FunctionHelper.ReverseString(reverse);
+            return result;
         }
     }
 }

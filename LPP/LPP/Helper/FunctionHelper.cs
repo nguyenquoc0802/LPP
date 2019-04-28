@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Numerics;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace LPP
 {
@@ -12,6 +13,7 @@ namespace LPP
         //convert int to binary in string form
         public static string ConvertToBinary(int inputNo, int maxNo)
         {
+            List<bool> temp = new List<bool>();
             char[] binaryNo = new char[maxNo];
             string convertBinary = Convert.ToString(inputNo, 2);
             int index = convertBinary.Length - 1;
@@ -25,7 +27,6 @@ namespace LPP
                 else
                 {
                     binaryNo[i] = '0';
-
                 }
             }
             return new string(binaryNo);
@@ -36,7 +37,14 @@ namespace LPP
             string lastLine = "";
             for (int i = tempList[0].GetRows().Count - 1; i >= 0; i--)
             {
-                lastLine += tempList[tempList.Count - 1].GetRows()[i];
+                if(tempList[tempList.Count - 1].GetRows()[i])
+                {
+                    lastLine += "1";
+                }
+                else
+                {
+                    lastLine += "0";
+                }
             }
             return lastLine;
         }
@@ -45,13 +53,8 @@ namespace LPP
         {
             string bigBinary = HashCodeHelper(tempList);
 
-            string output = "";
-
-            for (int i = 0; i <= bigBinary.Length - 4; i += 4)
-            {  
-                output += Convert.ToInt32(bigBinary.Substring(i, 4), 2).ToString("X");
-            }
-            return output;
+            string strHex = Convert.ToInt64(bigBinary, 2).ToString("X");
+            return strHex;
         }
 
         //compare two binary and produce new binary with * as a bit if necessary
@@ -81,6 +84,37 @@ namespace LPP
             }
         }
 
+        public static string ReverseString(string str1)
+        {
+            char[] stringChar = str1.ToArray();
+            Array.Reverse(stringChar);
+            return new string(stringChar);
+        }
+
+        public static int PriorityDeterminer(string c)
+        {
+            if(c == "~")
+            {
+                return 5;
+            }
+            else if(c == "&")
+            {
+                return 4;
+            }
+            else if(c == "|")
+            {
+                return 3;
+            }
+            else if(c == ">")
+            {
+                return 2;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+
         public static int CountOne(string str1)
         {
             int no1 = str1.Replace("0", "").Replace("*", "").Length;
@@ -93,6 +127,20 @@ namespace LPP
             return no0;
         }
 
-        
+        public static string TrimInputPropositions(string inputProposition)
+        {
+            Regex pattern = new Regex("[,()]");
+            char[] result = pattern.Replace(inputProposition, string.Empty).Where(c => !char.IsWhiteSpace(c)).ToArray();
+            return new string(result);
+        }
+
+        public static bool IsOperator(string c)
+        {
+            if(c == "&" || c == "|" || c == ">" || c == "=" || c == "~")
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

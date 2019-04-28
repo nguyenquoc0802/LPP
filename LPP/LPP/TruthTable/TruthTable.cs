@@ -4,18 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MoreLinq;
+using System.Runtime.InteropServices;
 
 namespace LPP
 {
     class TruthTable
     {
         private Node _root;
-        private List<MyCustomizeColumn> _columnList;
 
         public TruthTable(Node root)
         {
             this._root = root;
-            this._columnList = new List<MyCustomizeColumn>();
         }
 
         public List<Variable> GetUniqueVariableList()
@@ -60,76 +59,46 @@ namespace LPP
             }
         }
 
-        // get matrix in form of 1 and 0 which is shown in the table
-        public string[,] GetTruthTableMatrix()
+        //create Table in true false form
+        private List<MyCustomizeColumn> CreateTable()
         {
+            List<MyCustomizeColumn> myTable = new List<MyCustomizeColumn>();
             List<Variable> temp = this.GetUniqueVariableList();
-            // all node in case of matching node and in the order from left to right
-            List<Variable> allVariableNode = this.GetVariableList();
-            int totalVariable = temp.Count;
+            List<Variable> tempAllVariable = this.GetVariableList();
+            int totalVarible = temp.Count;
+            int rows = Convert.ToInt32(Math.Pow(2, totalVarible));
             bool result = false;
-            // create matrix with row = 2 ^ n, and column = n + 1(n = totalVariable)
-            int rows = Convert.ToInt32(Math.Pow(2, totalVariable));
-            string[,] matrix = new string[rows, totalVariable + 1];
+            //populate column
+            foreach(var v in temp)
+            {
+                 myTable.Add(new MyCustomizeColumn(v.ToString()));
+            }
+            myTable.Add(new MyCustomizeColumn(this._root.ToString()));
+            //sort alphabetically
+            myTable.Sort();
+            this.MyCustomizeSort(myTable);
             for (int i = 0; i < rows; i++)
             {
-                string needValue = FunctionHelper.ConvertToBinary(i, temp.Count);
-                for (int j = 0; j < totalVariable; j++)
+                string neededValue = FunctionHelper.ConvertToBinary(i, totalVarible);
+                for(int j = 0; j < myTable.Count; j++)
                 {
-                    matrix[i, j] = needValue[j].ToString();
-                    // check if there is any matching node and set truth value to them
-                    foreach (var c in allVariableNode)
+                    if(j == myTable.Count - 1)
                     {
-                        if (c.ToString() == temp[j].ToString())
+                        this.CalculateLogicExpressionHelper(this._root, ref result);
+                        myTable[j].AddRow(result);
+                        break;
+                    }
+                    myTable[j].AddRow(neededValue[j].ToString() != "0");
+                    foreach(var v in tempAllVariable)
+                    {
+                        if(myTable[j].GetName() == v.ToString())
                         {
-                            if (needValue[j].ToString() == "0")
-                            {
-                                c.TruthValue = false;
-                            }
-                            else
-                            {
-                                c.TruthValue = true;
-                            }
+                            v.TruthValue = neededValue[j].ToString() != "0";
                         }
                     }
                 }
-                this.CalculateLogicExpressionHelper(this._root, ref result);
-                if (result == false)
-                {
-                    matrix[i, matrix.GetLength(1) - 1] = "0";
-                }
-                else
-                {
-                    matrix[i, matrix.GetLength(1) - 1] = "1";
-                }
             }
-            return matrix;
-        }
-
-        //populate column list
-        private List<MyCustomizeColumn> PopulateColumn()
-        {
-            string[,] matrix = this.GetTruthTableMatrix();
-            List<Variable> temp = this.GetUniqueVariableList();
-            List<MyCustomizeColumn> tempColumnList = new List<MyCustomizeColumn>();
-            foreach(var v in temp)
-            {
-                MyCustomizeColumn newColumnVariable = new MyCustomizeColumn(v.ToString());
-                tempColumnList.Add(newColumnVariable);
-            }
-            //add proposition
-            MyCustomizeColumn newColumn = new MyCustomizeColumn(this._root.ToString());
-            tempColumnList.Add(newColumn);
-            for(int column = 0; column < matrix.GetLength(1); column++)
-            {
-                for(int row = 0; row < matrix.GetLength(0); row++)
-                {
-                    tempColumnList[column].AddRow(matrix[row, column]);
-                }
-            }
-            tempColumnList.Sort();
-            this.MyCustomizeSort(tempColumnList);
-            return tempColumnList;
+            return myTable;
         }
 
         //swap
@@ -146,7 +115,7 @@ namespace LPP
         //get truth table
         public string GetTableInString()
         {
-            List<MyCustomizeColumn> tempColumnList = this.PopulateColumn();
+            List<MyCustomizeColumn> tempColumnList = this.CreateTable();
             string display = "";
             for(int i = -1; i < tempColumnList[0].GetRows().Count; i++)
             {
@@ -154,11 +123,25 @@ namespace LPP
                 {
                     if(i == -1)
                     {
-                        display += c.GetName() + "\t";
+                        if(c.GetName().Length > 10)
+                        {
+                            display += "*\t";
+                        }
+                        else
+                        {
+                            display += c.GetName() + "\t";
+                        }
                     }
                     else
                     {
-                        display += c.GetRows()[i] + "\t";
+                        if (c.GetRows()[i])
+                        {
+                            display += "1\t";
+                        }
+                        else
+                        {
+                            display += "0\t";
+                        }
                     }
                 }
                 display += "\r\n";
@@ -169,7 +152,7 @@ namespace LPP
         //convert binary to hexadecimal number
         public string GetTruthTableHashCode()
         {
-            return FunctionHelper.ConvertBigBinaryToHex(this.PopulateColumn());
+            return FunctionHelper.ConvertBigBinaryToHex(this.CreateTable());
         }
 
         //get different with 1 and 0
@@ -177,17 +160,24 @@ namespace LPP
         {
             trueOutputList = new List<string>();
             falseOutputList = new List<string>();
-            List<MyCustomizeColumn> tempColumnList = this.PopulateColumn();
+            List<MyCustomizeColumn> tempColumnList = this.CreateTable();
             //index last column
             int indexLastColumn = tempColumnList.Count - 1;
             for (int i = 0; i < tempColumnList[indexLastColumn].GetRows().Count; i++)
             {
-                if (tempColumnList[indexLastColumn].GetRows()[i] == "1")
+                if (tempColumnList[indexLastColumn].GetRows()[i])
                 {
                     string rows = "";
                     for (int j = 0; j < indexLastColumn; j++)
                     {
-                        rows += tempColumnList[j].GetRows()[i];
+                        if(tempColumnList[j].GetRows()[i])
+                        {
+                            rows += "1";
+                        }
+                        else
+                        {
+                            rows += "0";
+                        }
                     }
                     trueOutputList.Add(rows);
                 }
@@ -196,20 +186,59 @@ namespace LPP
                     string rows = "";
                     for (int j = 0; j < indexLastColumn; j++)
                     {
-                        rows += tempColumnList[j].GetRows()[i];
+                        if (!tempColumnList[j].GetRows()[i])
+                        {
+                            rows += "0";
+                        }
+                        else
+                        {
+                            rows += "1";
+                        }
                     }
                     falseOutputList.Add(rows);
                 }
             }
         }
 
-        private void MinimizeHelper(ref List<string> trueOutputList, ref List<string> falseOutputList)
+        //true false value
+        private void GetRowWithOutput(ref List<MyCustomizeColumn> trueOutputList)
         {
+            List<MyCustomizeColumn> tempColumnList = this.CreateTable();
+            //clear all data but have the same structure
+            trueOutputList = this.CreateTable();
+            foreach(var c in trueOutputList)
+            {
+                c.ClearRow();
+            }
+            //index last column
+            int indexLastColumn = tempColumnList.Count - 1;
+            for (int i = 0; i < tempColumnList[indexLastColumn].GetRows().Count; i++)
+            {
+                if(tempColumnList[indexLastColumn].GetRows()[i])
+                {
+                    for (int j = 0; j < indexLastColumn; j++)
+                    {
+                        trueOutputList[j].AddRow(tempColumnList[j].GetRows()[i]);
+                    }
+                }
+            }
+        }
+
+        //generate the minimize table
+        private List<MyCustomizeColumn> MinimizeHelper()
+        {
+            List<string> trueOutputList = new List<string>();
+            List<string> falseOutputList = new List<string>();
+            List<MyCustomizeColumn> temp = this.CreateTable();
+            foreach(var c in temp)
+            {
+                c.ClearRow();
+            }
             this.GetRowWithOutput(ref trueOutputList, ref falseOutputList);
             List<string> tempTrue = trueOutputList;
             List<string> tempFalse = falseOutputList;
             int totalVariable = this.GetUniqueVariableList().Count;
-            for(int i = 1; i < totalVariable; i++)
+            for (int i = 1; i < totalVariable; i++)
             {
                 //avoid collection modified
                 List<string> nextListTrue = new List<string>();
@@ -217,9 +246,9 @@ namespace LPP
                 //true output
                 foreach (string str1 in new List<string>(trueOutputList))
                 {
-                    foreach(string str2 in new List<string>(tempTrue))
+                    foreach (string str2 in new List<string>(tempTrue))
                     {
-                        if(FunctionHelper.CompareString(str1, str2) != "")
+                        if (FunctionHelper.CompareString(str1, str2) != "")
                         {
                             nextListTrue.Add(FunctionHelper.CompareString(str1, str2));
                         }
@@ -238,53 +267,185 @@ namespace LPP
                 }
 
                 //true output list
-                if(nextListTrue.Count > 0)
+                if (nextListTrue.Count > 0)
                 {
                     trueOutputList = nextListTrue.Distinct().ToList();
                     tempTrue = trueOutputList;
                 }
 
                 //fasle output list
-                if(nextListFalse.Count > 0)
+                if (nextListFalse.Count > 0)
                 {
                     falseOutputList = nextListFalse.Distinct().ToList();
                     tempFalse = falseOutputList;
                 }
             }
-        }
 
-        public string MinimizeTruthTable()
-        {
-            List<string> trueOutputList = new List<string>();
-            List<string> falseOutputList = new List<string>();
-            string display = "";
-            this.MinimizeHelper(ref trueOutputList, ref falseOutputList);
-            List<MyCustomizeColumn> tempList = this.PopulateColumn();
-            //column name
-            foreach(var c in tempList)
+            
+            //add to temp list
+            foreach (string str1 in falseOutputList)
             {
-                display += c.GetName() + "\t";
-            }
-            display += "\r\n";
-            //false output
-            foreach(string str1 in falseOutputList)
-            {
-                foreach (var c in str1)
+                for (int i = 0; i < str1.Length; i++)
                 {
-                    display += c + "\t";
+                    temp[i].AddStringRow(str1[i].ToString());
                 }
-                display +=  "0" + "\r\n";
+                temp[temp.Count - 1].AddStringRow("0");
             }
-            //true output
+            //add to temp list
             foreach (string str1 in trueOutputList)
             {
-                foreach(var c in str1)
+                for (int i = 0; i < str1.Length; i++)
                 {
-                    display += c + "\t";
+                    temp[i].AddStringRow(str1[i].ToString());
                 }
-                display += "1" + "\r\n";
+                temp[temp.Count - 1].AddStringRow("1");
+            }
+            return temp;
+        }
+
+        //print
+        public string MinimizeTruthTable()
+        {
+            string display = "";
+            List<MyCustomizeColumn> temp = this.MinimizeHelper();
+            //column name
+            for(int i = -1; i < temp[0].GetStringRows().Count; i++)
+            {
+                foreach (var c in temp)
+                {
+                    if (i == -1)
+                    {
+                        if(c.GetName().Length > 10)
+                        {
+                            display += "*\t";
+                        }
+                        else
+                        {
+                            display += c.GetName() + "\t";
+                        }
+                    }
+                    else
+                    {
+                        display += c.GetStringRows()[i] + "\t";
+                    }
+                }
+                display += "\r\n";
             }
             return display;
         }
+
+        //print disjunctive normal form
+        public string DisjunctiveNormalForm()
+        {
+            string resultInfix = "";
+            List<MyCustomizeColumn> truthList = new List<MyCustomizeColumn>();
+            this.GetRowWithOutput(ref truthList);
+            for(int i = 0; i < truthList[0].GetRows().Count; i++)
+            {
+                resultInfix += "(";
+                //omit the last column(logic expression)
+                for (int j = 0; j < truthList.Count - 1; j++)
+                {
+                    bool value = truthList[j].GetRows()[i];
+                    if (value)
+                    {
+                        resultInfix += truthList[j].GetName();
+                    }
+                    else
+                    {
+                        resultInfix += "~" + truthList[j].GetName();
+                    }
+                    if (j != truthList.Count - 2)
+                    {
+                        resultInfix += " & ";
+                    }
+                }
+                if(i == truthList[0].GetRows().Count - 1)
+                {
+                    resultInfix += ")";
+                }
+                else
+                {
+                    resultInfix += ") | ";
+                }
+            }
+            return resultInfix;
+        }
+
+        //print disjunctive helper()
+        private void SimplifiedTableDisjunctiveFormHelper(ref List<MyCustomizeColumn> trueOutputList)
+        {
+            List<MyCustomizeColumn> temp = this.MinimizeHelper();
+            trueOutputList = this.CreateTable();
+            foreach(var c in trueOutputList)
+            {
+                c.ClearRow();
+            }
+            //list with output 1
+            for(int i = 0; i < temp[0].GetStringRows().Count; i++)
+            {
+                if(temp[temp.Count - 1].GetStringRows()[i] == "1")
+                {
+                    for(int j = 0; j < temp.Count - 1; j++)
+                    {
+                        string s = temp[j].GetStringRows()[i];
+                        trueOutputList[j].AddStringRow(s);
+                    }
+                }
+            }
+        }
+
+        //print disjunctive normal form of simplified truth table
+        public string SimplifiedTableDisjunctiveForm()
+        {
+            string result = "";
+            List<MyCustomizeColumn> temp = new List<MyCustomizeColumn>();
+            this.SimplifiedTableDisjunctiveFormHelper(ref temp);
+            int count = 0;
+            List<string> row = new List<string>();
+            for (int i = 0; i < temp[0].GetStringRows().Count; i++)
+            {
+                result += "(";
+                //omit the last column(logic expression)
+                for (int j = 0; j < temp.Count - 1; j++)
+                {
+                    //add row depend on 1 or 0
+                    if (temp[j].GetStringRows()[i] == "1")
+                    {
+                        row.Add(temp[j].GetName());
+                    }
+                    else if (temp[j].GetStringRows()[i] == "0")
+                    {
+                        row.Add("~" + temp[j].GetName());
+                    }
+                }
+                //display row
+                for(int value = 0; value < row.Count; value++)
+                {
+                    if(value == row.Count - 1)
+                    {
+                        result += row[value];
+                    }
+                    else
+                    {
+                        result += row[value] + " & ";
+                    }
+                }
+                row.Clear();
+                if (i == temp[0].GetStringRows().Count - 1)
+                {
+                    result += ")";
+                }
+                else
+                {
+                    result += ") | ";
+                }
+            }
+
+
+            return result;
+        }
+
+        
     }
 } 
