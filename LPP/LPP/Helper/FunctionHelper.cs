@@ -44,8 +44,6 @@ namespace LPP
         public static string ConvertBigBinaryToHex(List<MyCustomizeColumn> tempList)
         {
             string bigBinary = HashCodeHelper(tempList);
-            int rest = bigBinary.Length % 4;
-            bigBinary = bigBinary.PadLeft(rest, '0'); //pad the length out to by divideable by 4
 
             string output = "";
 

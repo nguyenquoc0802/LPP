@@ -50,7 +50,6 @@ namespace LPP
 
         private void btnSimplify_Click(object sender, EventArgs e)
         {
-            tbTruthTable.Text = "";
             TruthTable myTruthTable = new TruthTable(myTree.GetRoot());
             tbTruthTable.Text = myTruthTable.MinimizeTruthTable();
         }
