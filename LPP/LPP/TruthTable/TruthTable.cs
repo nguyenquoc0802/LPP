@@ -229,55 +229,68 @@ namespace LPP
         {
             List<string> trueOutputList = new List<string>();
             List<string> falseOutputList = new List<string>();
+            //get the structure of the table and clear data
             List<MyCustomizeColumn> temp = this.CreateTable();
             foreach(var c in temp)
             {
                 c.ClearRow();
             }
+            //get row with same output
             this.GetRowWithOutput(ref trueOutputList, ref falseOutputList);
-            List<string> tempTrue = trueOutputList;
-            List<string> tempFalse = falseOutputList;
             int totalVariable = this.GetUniqueVariableList().Count;
             for (int i = 1; i < totalVariable; i++)
             {
                 //avoid collection modified
-                List<string> nextListTrue = new List<string>();
-                List<string> nextListFalse = new List<string>();
+                bool checkSimplified = false;
+                List<string> nextList = new List<string>();
                 //true output
                 foreach (string str1 in new List<string>(trueOutputList))
                 {
-                    foreach (string str2 in new List<string>(tempTrue))
+                    foreach (string str2 in new List<string>(trueOutputList))
                     {
                         if (FunctionHelper.CompareString(str1, str2) != "")
                         {
-                            nextListTrue.Add(FunctionHelper.CompareString(str1, str2));
+                            nextList.Add(FunctionHelper.CompareString(str1, str2));
+                            checkSimplified = true;
                         }
                     }
+                    if(checkSimplified == false)
+                    {
+                        nextList.Add(str1);
+                    }
+                    else
+                    {
+                        checkSimplified = false;
+                    }
+                }
+                if (nextList.Count > 0)
+                {
+                    trueOutputList = nextList.Distinct().ToList();
+                    nextList.Clear();
                 }
                 //false output
                 foreach (string str1 in new List<string>(falseOutputList))
                 {
-                    foreach (string str2 in new List<string>(tempFalse))
+                    foreach (string str2 in new List<string>(falseOutputList))
                     {
                         if (FunctionHelper.CompareString(str1, str2) != "")
                         {
-                            nextListFalse.Add(FunctionHelper.CompareString(str1, str2));
+                            nextList.Add(FunctionHelper.CompareString(str1, str2));
+                            checkSimplified = true;
                         }
                     }
+                    if (checkSimplified == false)
+                    {
+                        nextList.Add(str1);
+                    }
+                    else
+                    {
+                        checkSimplified = false;
+                    }
                 }
-
-                //true output list
-                if (nextListTrue.Count > 0)
+                if (nextList.Count > 0)
                 {
-                    trueOutputList = nextListTrue.Distinct().ToList();
-                    tempTrue = trueOutputList;
-                }
-
-                //fasle output list
-                if (nextListFalse.Count > 0)
-                {
-                    falseOutputList = nextListFalse.Distinct().ToList();
-                    tempFalse = falseOutputList;
+                    falseOutputList = nextList.Distinct().ToList();
                 }
             }
 
@@ -401,7 +414,6 @@ namespace LPP
             string result = "";
             List<MyCustomizeColumn> temp = new List<MyCustomizeColumn>();
             this.SimplifiedTableDisjunctiveFormHelper(ref temp);
-            int count = 0;
             List<string> row = new List<string>();
             for (int i = 0; i < temp[0].GetStringRows().Count; i++)
             {
