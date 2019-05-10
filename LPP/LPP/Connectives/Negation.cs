@@ -12,11 +12,12 @@ namespace LPP.Connectives
 
         public override bool CalculateResult()
         {
-            if(this.RightNode.TruthValue == false)
-            {
-                return this.TruthValue = true;
-            }
-            return this.TruthValue = false;
+            return this.TruthValue = !(this.RightNode.TruthValue);
+        }
+
+        public override string ConvertOperator()
+        {
+            return string.Format("%({0}, {0})", this.RightNode.ConvertOperator());
         }
 
         public override string ToString()

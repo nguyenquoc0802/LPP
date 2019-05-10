@@ -27,17 +27,21 @@ namespace LPP
             //enable button
             btnDraw.Enabled = true;
             btnReadDisjunction.Enabled = true;
-            //function
+            btnReadNAND.Enabled = true;
+            //create binary tree
             string proposition = tbInput.Text;
             myTree.InsertTree(proposition);
-            tbOutputInfix.Text = myTree.DisplayInOrder();
             TruthTable myTruthTable = new TruthTable(myTree.GetRoot());
+            lbNAND.Items.Clear();
+            lbDisjunctiveNormalForm.Items.Clear();
+            //display 
+            tbOutputInfix.Text = myTree.DisplayInOrder();
             tbTruthTable.Text = myTruthTable.GetTableInString();
             tbHashCode.Text = myTruthTable.GetTruthTableHashCode();
-            //show disjunctive normal form
-            tbDisjunctiveNormalForm.Text = myTruthTable.DisjunctiveNormalForm();
+            lbDisjunctiveNormalForm.Items.Add(myTruthTable.DisjunctiveNormalForm());
             tbSimplified.Text = myTruthTable.MinimizeTruthTable();
             tbSimplifiedDisjunction.Text = myTruthTable.SimplifiedTableDisjunctiveForm();
+            lbNAND.Items.Add(myTree.DisplayOnlyNAND());
         }
 
         private void btnDraw_Click(object sender, EventArgs e)
@@ -54,12 +58,48 @@ namespace LPP
 
         private void btnReadDisjunction_Click(object sender, EventArgs e)
         {
-            string prefixForm = myTree.InfixToPrefix(tbDisjunctiveNormalForm.Text);
-            myTree.InsertTree(prefixForm);
-            tbOutputInfix.Text = myTree.DisplayInOrder();
+            //convert infix to prefix
             TruthTable myTruthTable = new TruthTable(myTree.GetRoot());
+            string prefixForm = myTree.InfixToPrefix(myTruthTable.DisjunctiveNormalForm());
+            //create tree
+            myTree.InsertTree(prefixForm);
+            lbDisjunctiveNormalForm.Items.Clear();
+            lbNAND.Items.Clear();
+            //display
+            tbOutputInfix.Text = myTree.DisplayInOrder();
+            myTruthTable = new TruthTable(myTree.GetRoot());
             tbTruthTable.Text = myTruthTable.GetTableInString();
             tbHashCode.Text = myTruthTable.GetTruthTableHashCode();
+            lbDisjunctiveNormalForm.Items.Add(myTruthTable.DisjunctiveNormalForm());
+            lbNAND.Items.Add(myTree.DisplayOnlyNAND());
+        }
+
+        private void btnReadNAND_Click(object sender, EventArgs e)
+        {
+            string proposition = myTree.DisplayOnlyNAND();
+            myTree.InsertTree(proposition);
+            TruthTable myTruthTable = new TruthTable(myTree.GetRoot());
+            lbDisjunctiveNormalForm.Items.Clear();
+            //display 
+            tbOutputInfix.Text = myTree.DisplayInOrder();
+            tbTruthTable.Text = myTruthTable.GetTableInString();
+            tbHashCode.Text = myTruthTable.GetTruthTableHashCode();
+            lbDisjunctiveNormalForm.Items.Add(myTruthTable.DisjunctiveNormalForm());
+            tbSimplified.Text = myTruthTable.MinimizeTruthTable();
+            tbSimplifiedDisjunction.Text = myTruthTable.SimplifiedTableDisjunctiveForm();
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            myTree = null;
+            tbInput.Text = "";
+            tbOutputInfix.Text = "";
+            tbTruthTable.Text = "";
+            tbHashCode.Text = "";
+            tbSimplified.Text = "";
+            tbSimplifiedDisjunction.Text = "";
+            lbDisjunctiveNormalForm.Items.Clear();
+            lbNAND.Items.Clear();
         }
     }
 }

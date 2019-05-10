@@ -39,6 +39,8 @@ namespace LPP
             }
         }
 
+        public override string ConvertOperator() { return ""; }
+
         public override string ToString()
         {
             return "";

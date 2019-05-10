@@ -24,6 +24,8 @@ namespace LPP
 
         public virtual bool CalculateResult() { return true; }
 
+        public virtual string ConvertOperator() { return ""; }
+
         //each node have different implementation
         public virtual void DrawGraphHelper(ref string content) { }
     }

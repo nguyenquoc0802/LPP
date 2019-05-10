@@ -32,6 +32,11 @@ namespace LPP
             return this.TruthValue;
         }
 
+        public override string ConvertOperator()
+        {
+            return this._name;
+        }
+
         public override string ToString()
         {
             return this._name;

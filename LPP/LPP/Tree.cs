@@ -80,6 +80,12 @@ namespace LPP
                     n.RightNode = this._myStack.Pop();
                     this._myStack.Push(n);
                     break;
+                case "%":
+                    n = new NANDOperator(c);
+                    n.LeftNode = this._myStack.Pop();
+                    n.RightNode = this._myStack.Pop();
+                    this._myStack.Push(n);
+                    break;
                 default:
                     n = new Variable(c);
                     this._myStack.Push(n);
@@ -91,6 +97,11 @@ namespace LPP
         public string DisplayInOrder()
         {
             return _root.ToString();
+        }
+
+        public string DisplayOnlyNAND()
+        {
+            return this._root.ConvertOperator();
         }
 
         //draw Tree

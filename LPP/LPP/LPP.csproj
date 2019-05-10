@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connectives\NANDOperator.cs" />
     <Compile Include="Helper\FunctionHelper.cs" />
     <Compile Include="Connectives\AndOperator.cs" />
     <Compile Include="Connectives\BiImplication.cs" />

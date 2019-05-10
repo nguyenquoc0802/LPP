@@ -36,9 +36,12 @@
             this.tbTruthTable = new System.Windows.Forms.TextBox();
             this.tbHashCode = new System.Windows.Forms.TextBox();
             this.tbSimplified = new System.Windows.Forms.TextBox();
-            this.tbDisjunctiveNormalForm = new System.Windows.Forms.TextBox();
             this.btnReadDisjunction = new System.Windows.Forms.Button();
             this.tbSimplifiedDisjunction = new System.Windows.Forms.TextBox();
+            this.btnReadNAND = new System.Windows.Forms.Button();
+            this.lbNAND = new System.Windows.Forms.ListBox();
+            this.lbDisjunctiveNormalForm = new System.Windows.Forms.ListBox();
+            this.btnClear = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnRead
@@ -54,6 +57,7 @@
             // tbInput
             // 
             this.tbInput.Location = new System.Drawing.Point(121, 12);
+            this.tbInput.Multiline = true;
             this.tbInput.Name = "tbInput";
             this.tbInput.Size = new System.Drawing.Size(695, 20);
             this.tbInput.TabIndex = 1;
@@ -61,7 +65,9 @@
             // tbOutputInfix
             // 
             this.tbOutputInfix.Location = new System.Drawing.Point(121, 48);
+            this.tbOutputInfix.Multiline = true;
             this.tbOutputInfix.Name = "tbOutputInfix";
+            this.tbOutputInfix.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.tbOutputInfix.Size = new System.Drawing.Size(822, 20);
             this.tbOutputInfix.TabIndex = 1;
             // 
@@ -78,7 +84,7 @@
             // btnDraw
             // 
             this.btnDraw.Enabled = false;
-            this.btnDraw.Location = new System.Drawing.Point(12, 146);
+            this.btnDraw.Location = new System.Drawing.Point(12, 211);
             this.btnDraw.Name = "btnDraw";
             this.btnDraw.Size = new System.Drawing.Size(75, 20);
             this.btnDraw.TabIndex = 0;
@@ -115,19 +121,12 @@
             this.tbSimplified.Size = new System.Drawing.Size(455, 209);
             this.tbSimplified.TabIndex = 3;
             // 
-            // tbDisjunctiveNormalForm
-            // 
-            this.tbDisjunctiveNormalForm.Location = new System.Drawing.Point(143, 84);
-            this.tbDisjunctiveNormalForm.Name = "tbDisjunctiveNormalForm";
-            this.tbDisjunctiveNormalForm.Size = new System.Drawing.Size(800, 20);
-            this.tbDisjunctiveNormalForm.TabIndex = 1;
-            // 
             // btnReadDisjunction
             // 
             this.btnReadDisjunction.Enabled = false;
-            this.btnReadDisjunction.Location = new System.Drawing.Point(12, 84);
+            this.btnReadDisjunction.Location = new System.Drawing.Point(12, 87);
             this.btnReadDisjunction.Name = "btnReadDisjunction";
-            this.btnReadDisjunction.Size = new System.Drawing.Size(125, 46);
+            this.btnReadDisjunction.Size = new System.Drawing.Size(125, 69);
             this.btnReadDisjunction.TabIndex = 0;
             this.btnReadDisjunction.Text = "Read Disjunctive Form";
             this.btnReadDisjunction.UseVisualStyleBackColor = true;
@@ -135,25 +134,69 @@
             // 
             // tbSimplifiedDisjunction
             // 
-            this.tbSimplifiedDisjunction.Location = new System.Drawing.Point(143, 110);
+            this.tbSimplifiedDisjunction.Location = new System.Drawing.Point(143, 136);
+            this.tbSimplifiedDisjunction.Multiline = true;
             this.tbSimplifiedDisjunction.Name = "tbSimplifiedDisjunction";
+            this.tbSimplifiedDisjunction.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.tbSimplifiedDisjunction.Size = new System.Drawing.Size(800, 20);
             this.tbSimplifiedDisjunction.TabIndex = 1;
+            // 
+            // btnReadNAND
+            // 
+            this.btnReadNAND.Enabled = false;
+            this.btnReadNAND.Location = new System.Drawing.Point(12, 162);
+            this.btnReadNAND.Name = "btnReadNAND";
+            this.btnReadNAND.Size = new System.Drawing.Size(125, 43);
+            this.btnReadNAND.TabIndex = 0;
+            this.btnReadNAND.Text = "Read NAND Form";
+            this.btnReadNAND.UseVisualStyleBackColor = true;
+            this.btnReadNAND.Click += new System.EventHandler(this.btnReadNAND_Click);
+            // 
+            // lbNAND
+            // 
+            this.lbNAND.FormattingEnabled = true;
+            this.lbNAND.HorizontalScrollbar = true;
+            this.lbNAND.Location = new System.Drawing.Point(143, 162);
+            this.lbNAND.Name = "lbNAND";
+            this.lbNAND.Size = new System.Drawing.Size(800, 43);
+            this.lbNAND.TabIndex = 4;
+            // 
+            // lbDisjunctiveNormalForm
+            // 
+            this.lbDisjunctiveNormalForm.FormattingEnabled = true;
+            this.lbDisjunctiveNormalForm.HorizontalScrollbar = true;
+            this.lbDisjunctiveNormalForm.Location = new System.Drawing.Point(143, 87);
+            this.lbDisjunctiveNormalForm.Name = "lbDisjunctiveNormalForm";
+            this.lbDisjunctiveNormalForm.Size = new System.Drawing.Size(800, 43);
+            this.lbDisjunctiveNormalForm.TabIndex = 20;
+            // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(12, 237);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(75, 20);
+            this.btnClear.TabIndex = 0;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(955, 626);
+            this.Controls.Add(this.lbDisjunctiveNormalForm);
+            this.Controls.Add(this.lbNAND);
             this.Controls.Add(this.tbSimplified);
             this.Controls.Add(this.tbTruthTable);
             this.Controls.Add(this.lbInfix);
             this.Controls.Add(this.tbHashCode);
             this.Controls.Add(this.tbSimplifiedDisjunction);
-            this.Controls.Add(this.tbDisjunctiveNormalForm);
             this.Controls.Add(this.tbOutputInfix);
             this.Controls.Add(this.tbInput);
             this.Controls.Add(this.btnReadDisjunction);
+            this.Controls.Add(this.btnReadNAND);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnDraw);
             this.Controls.Add(this.btnRead);
             this.Name = "Form1";
@@ -173,9 +216,12 @@
         private System.Windows.Forms.TextBox tbTruthTable;
         private System.Windows.Forms.TextBox tbHashCode;
         private System.Windows.Forms.TextBox tbSimplified;
-        private System.Windows.Forms.TextBox tbDisjunctiveNormalForm;
         private System.Windows.Forms.Button btnReadDisjunction;
         private System.Windows.Forms.TextBox tbSimplifiedDisjunction;
+        private System.Windows.Forms.Button btnReadNAND;
+        private System.Windows.Forms.ListBox lbNAND;
+        private System.Windows.Forms.ListBox lbDisjunctiveNormalForm;
+        private System.Windows.Forms.Button btnClear;
     }
 }
 
