@@ -10,6 +10,13 @@ namespace LPP
 {
     static class FunctionHelper
     {
+        //evaluate formular
+        public static bool EvaluateFormula(string proposition)
+        {
+            Regex pattern = new Regex("[@!]");
+            return pattern.IsMatch(proposition);
+        }
+
         //convert int to binary in string form
         public static string ConvertToBinary(int inputNo, int maxNo)
         {
@@ -52,7 +59,6 @@ namespace LPP
         public static string ConvertBigBinaryToHex(List<MyCustomizeColumn> tempList)
         {
             string bigBinary = HashCodeHelper(tempList);
-
             string strHex = Convert.ToInt64(bigBinary, 2).ToString("X");
             return strHex;
         }
@@ -129,7 +135,7 @@ namespace LPP
 
         public static string TrimInputPropositions(string inputProposition)
         {
-            Regex pattern = new Regex("[,()]");
+            Regex pattern = new Regex("[,.()]");
             char[] result = pattern.Replace(inputProposition, string.Empty).Where(c => !char.IsWhiteSpace(c)).ToArray();
             return new string(result);
         }

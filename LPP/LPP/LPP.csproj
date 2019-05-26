@@ -85,6 +85,10 @@
     </Compile>
     <Compile Include="IProposition.cs" />
     <Compile Include="MoreLinq\MoreEnumerable.DistinctBy.cs" />
+    <Compile Include="Predicate\Existential.cs" />
+    <Compile Include="Predicate\Formula.cs" />
+    <Compile Include="Predicate\Quantifier.cs" />
+    <Compile Include="Predicate\Universal.cs" />
     <Compile Include="TruthTable\MyCustomizeColumn.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Program.cs" />

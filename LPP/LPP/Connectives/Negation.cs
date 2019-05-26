@@ -22,7 +22,7 @@ namespace LPP.Connectives
 
         public override string ToString()
         {
-            return string.Format("{0}{1}", this._value, this.RightNode); 
+            return string.Format("{0}{1}", this._name, this.RightNode); 
         }
     }
 }

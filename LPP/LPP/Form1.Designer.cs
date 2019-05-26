@@ -42,6 +42,10 @@
             this.lbNAND = new System.Windows.Forms.ListBox();
             this.lbDisjunctiveNormalForm = new System.Windows.Forms.ListBox();
             this.btnClear = new System.Windows.Forms.Button();
+            this.lbUnboundVar = new System.Windows.Forms.ListBox();
+            this.lbBoundVar = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnRead
@@ -180,11 +184,49 @@
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
+            // lbUnboundVar
+            // 
+            this.lbUnboundVar.FormattingEnabled = true;
+            this.lbUnboundVar.Location = new System.Drawing.Point(143, 304);
+            this.lbUnboundVar.Name = "lbUnboundVar";
+            this.lbUnboundVar.Size = new System.Drawing.Size(120, 95);
+            this.lbUnboundVar.TabIndex = 21;
+            // 
+            // lbBoundVar
+            // 
+            this.lbBoundVar.FormattingEnabled = true;
+            this.lbBoundVar.Location = new System.Drawing.Point(12, 304);
+            this.lbBoundVar.Name = "lbBoundVar";
+            this.lbBoundVar.Size = new System.Drawing.Size(120, 95);
+            this.lbBoundVar.TabIndex = 21;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(9, 276);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(79, 13);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "Bound Variable";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(140, 276);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(92, 13);
+            this.label2.TabIndex = 22;
+            this.label2.Text = "Unbound Variable";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(955, 626);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lbBoundVar);
+            this.Controls.Add(this.lbUnboundVar);
             this.Controls.Add(this.lbDisjunctiveNormalForm);
             this.Controls.Add(this.lbNAND);
             this.Controls.Add(this.tbSimplified);
@@ -222,6 +264,10 @@
         private System.Windows.Forms.ListBox lbNAND;
         private System.Windows.Forms.ListBox lbDisjunctiveNormalForm;
         private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.ListBox lbUnboundVar;
+        private System.Windows.Forms.ListBox lbBoundVar;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 

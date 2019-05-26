@@ -10,17 +10,13 @@ namespace LPP
     abstract class Connective: Node
     {
         //field
-        protected string _value;
 
         //constructor
-        public Connective(string value)
-        {
-            this._value = value;
-        }
+        public Connective(string name) : base(name) { }
 
         public string GetVal()
         {
-            return this._value;
+            return this._name;
         }
 
         public override bool CalculateResult() { return true; }

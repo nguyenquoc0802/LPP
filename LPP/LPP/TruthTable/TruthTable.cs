@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using MoreLinq;
 using System.Runtime.InteropServices;
+using LPP.Predicate;
+using LPP.Connectives;
 
 namespace LPP
 {
@@ -17,19 +19,19 @@ namespace LPP
             this._root = root;
         }
 
-        public List<Variable> GetUniqueVariableList()
+        public List<Formula> GetUniqueFormulaList()
         {
-            List<Variable> temp = new List<Variable>();
-            this.PopulateListOfVariable(this._root, ref temp);
+            List<Formula> temp = new List<Formula>();
+            this.PopulateListOfFormula(this._root, ref temp);
             // third party library, will try to do by myself
-            List<Variable> uniqueList = temp.DistinctBy(v => v.ToString()).ToList();
+            List<Formula> uniqueList = temp.DistinctBy(v => v.ToString()).ToList();
             return uniqueList;
         }
         
-        private List<Variable> GetVariableList()
+        private List<Formula> GetFormulaList()
         {
-            List<Variable> temp = new List<Variable>();
-            this.PopulateListOfVariable(this._root, ref temp);
+            List<Formula> temp = new List<Formula>();
+            this.PopulateListOfFormula(this._root, ref temp);
             return temp;
         }
 
@@ -45,17 +47,17 @@ namespace LPP
         }
 
         //populate list of varible including the same variable
-        private void PopulateListOfVariable(Node root, ref List<Variable> variableList)
+        private void PopulateListOfFormula(Node root, ref List<Formula> variableList)
         {
             //tranverse through the tree using pre-order
             if (root != null)
             {
-                if (root is Variable v)
+                if (root is Formula v)
                 {
                     variableList.Add(v);
                 }
-                this.PopulateListOfVariable(root.LeftNode, ref variableList);
-                this.PopulateListOfVariable(root.RightNode, ref variableList);
+                this.PopulateListOfFormula(root.LeftNode, ref variableList);
+                this.PopulateListOfFormula(root.RightNode, ref variableList);
             }
         }
 
@@ -63,8 +65,8 @@ namespace LPP
         private List<MyCustomizeColumn> CreateTable()
         {
             List<MyCustomizeColumn> myTable = new List<MyCustomizeColumn>();
-            List<Variable> temp = this.GetUniqueVariableList();
-            List<Variable> tempAllVariable = this.GetVariableList();
+            List<Formula> temp = this.GetUniqueFormulaList();
+            List<Formula> tempAllVariable = this.GetFormulaList();
             int totalVarible = temp.Count;
             int rows = Convert.ToInt32(Math.Pow(2, totalVarible));
             bool result = false;
@@ -224,54 +226,18 @@ namespace LPP
             }
         }
 
-        //generate the minimize table
-        private List<MyCustomizeColumn> MinimizeHelper()
+        //mizimize output helper
+        private List<string> MinimizOutputHelper(List<string> inputList)
         {
-            List<string> trueOutputList = new List<string>();
-            List<string> falseOutputList = new List<string>();
-            //get the structure of the table and clear data
-            List<MyCustomizeColumn> temp = this.CreateTable();
-            foreach(var c in temp)
-            {
-                c.ClearRow();
-            }
-            //get row with same output
-            this.GetRowWithOutput(ref trueOutputList, ref falseOutputList);
-            int totalVariable = this.GetUniqueVariableList().Count;
-            for (int i = 1; i < totalVariable; i++)
+            for (int i = 1; ; i++)
             {
                 //avoid collection modified
                 bool checkSimplified = false;
                 List<string> nextList = new List<string>();
                 //true output
-                foreach (string str1 in new List<string>(trueOutputList))
+                foreach (string str1 in new List<string>(inputList))
                 {
-                    foreach (string str2 in new List<string>(trueOutputList))
-                    {
-                        if (FunctionHelper.CompareString(str1, str2) != "")
-                        {
-                            nextList.Add(FunctionHelper.CompareString(str1, str2));
-                            checkSimplified = true;
-                        }
-                    }
-                    if(checkSimplified == false)
-                    {
-                        nextList.Add(str1);
-                    }
-                    else
-                    {
-                        checkSimplified = false;
-                    }
-                }
-                if (nextList.Count > 0)
-                {
-                    trueOutputList = nextList.Distinct().ToList();
-                    nextList.Clear();
-                }
-                //false output
-                foreach (string str1 in new List<string>(falseOutputList))
-                {
-                    foreach (string str2 in new List<string>(falseOutputList))
+                    foreach (string str2 in new List<string>(inputList))
                     {
                         if (FunctionHelper.CompareString(str1, str2) != "")
                         {
@@ -290,28 +256,57 @@ namespace LPP
                 }
                 if (nextList.Count > 0)
                 {
-                    falseOutputList = nextList.Distinct().ToList();
+                    if((nextList.Count == inputList.Count) && nextList.SequenceEqual(inputList))
+                    {
+                        return nextList.Distinct().ToList();
+                    }
+                    else
+                    {
+                        inputList = nextList.Distinct().ToList();
+                        nextList.Clear();
+                    }
                 }
             }
+        }
 
-            
-            //add to temp list
-            foreach (string str1 in falseOutputList)
+        //generate the minimize table
+        private List<MyCustomizeColumn> MinimizeHelper()
+        {
+            List<string> trueOutputList = new List<string>();
+            List<string> falseOutputList = new List<string>();
+            //get the structure of the table and clear data
+            List<MyCustomizeColumn> temp = this.CreateTable();
+            foreach(var c in temp)
             {
-                for (int i = 0; i < str1.Length; i++)
-                {
-                    temp[i].AddStringRow(str1[i].ToString());
-                }
-                temp[temp.Count - 1].AddStringRow("0");
+                c.ClearRow();
             }
-            //add to temp list
-            foreach (string str1 in trueOutputList)
+            //get row with same output
+            this.GetRowWithOutput(ref trueOutputList, ref falseOutputList);
+            if(falseOutputList.Count > 0)
             {
-                for (int i = 0; i < str1.Length; i++)
+                falseOutputList = this.MinimizOutputHelper(falseOutputList);
+                //add to temp list
+                foreach (string str1 in falseOutputList)
                 {
-                    temp[i].AddStringRow(str1[i].ToString());
+                    for (int i = 0; i < str1.Length; i++)
+                    {
+                        temp[i].AddStringRow(str1[i].ToString());
+                    }
+                    temp[temp.Count - 1].AddStringRow("0");
                 }
-                temp[temp.Count - 1].AddStringRow("1");
+            }
+            if (trueOutputList.Count > 0)
+            {
+                trueOutputList = this.MinimizOutputHelper(trueOutputList);
+                //add to temp list
+                foreach (string str1 in trueOutputList)
+                {
+                    for (int i = 0; i < str1.Length; i++)
+                    {
+                        temp[i].AddStringRow(str1[i].ToString());
+                    }
+                    temp[temp.Count - 1].AddStringRow("1");
+                }
             }
             return temp;
         }

@@ -26,22 +26,30 @@ namespace LPP
         {
             //enable button
             btnDraw.Enabled = true;
-            btnReadDisjunction.Enabled = true;
-            btnReadNAND.Enabled = true;
             //create binary tree
             string proposition = tbInput.Text;
             myTree.InsertTree(proposition);
-            TruthTable myTruthTable = new TruthTable(myTree.GetRoot());
-            lbNAND.Items.Clear();
-            lbDisjunctiveNormalForm.Items.Clear();
-            //display 
-            tbOutputInfix.Text = myTree.DisplayInOrder();
-            tbTruthTable.Text = myTruthTable.GetTableInString();
-            tbHashCode.Text = myTruthTable.GetTruthTableHashCode();
-            lbDisjunctiveNormalForm.Items.Add(myTruthTable.DisjunctiveNormalForm());
-            tbSimplified.Text = myTruthTable.MinimizeTruthTable();
-            tbSimplifiedDisjunction.Text = myTruthTable.SimplifiedTableDisjunctiveForm();
-            lbNAND.Items.Add(myTree.DisplayOnlyNAND());
+            //check input
+            if(FunctionHelper.EvaluateFormula(proposition))
+            {
+                tbOutputInfix.Text = myTree.DisplayInOrder();
+            }
+            else
+            {
+                btnReadDisjunction.Enabled = true;
+                btnReadNAND.Enabled = true;
+                TruthTable myTruthTable = new TruthTable(myTree.GetRoot());
+                lbNAND.Items.Clear();
+                lbDisjunctiveNormalForm.Items.Clear();
+                //display 
+                tbOutputInfix.Text = myTree.DisplayInOrder();
+                tbTruthTable.Text = myTruthTable.GetTableInString();
+                tbHashCode.Text = myTruthTable.GetTruthTableHashCode();
+                lbDisjunctiveNormalForm.Items.Add(myTruthTable.DisjunctiveNormalForm());
+                tbSimplified.Text = myTruthTable.MinimizeTruthTable();
+                tbSimplifiedDisjunction.Text = myTruthTable.SimplifiedTableDisjunctiveForm();
+                lbNAND.Items.Add(myTree.DisplayOnlyNAND());
+            }
         }
 
         private void btnDraw_Click(object sender, EventArgs e)

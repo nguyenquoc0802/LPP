@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LPP.Connectives;
+using LPP.Predicate;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Drawing;
@@ -86,9 +87,35 @@ namespace LPP
                     n.RightNode = this._myStack.Pop();
                     this._myStack.Push(n);
                     break;
-                default:
-                    n = new Variable(c);
+                case "!":
+                    n = new Existential(c, new Variable(this._myStack.Pop().ToString()));
+                    n.RightNode = this._myStack.Pop();
                     this._myStack.Push(n);
+                    break;
+                case "@":
+                    n = new Universal(c, new Variable(this._myStack.Pop().ToString()));
+                    n.RightNode = this._myStack.Pop();
+                    this._myStack.Push(n);
+                    break;
+                default:
+                    if(char.IsLower(char.Parse(c)))
+                    {
+                        n = new Variable(c);
+                        this._myStack.Push(n);
+                    }
+                    else
+                    {
+                        n = new Formula(c);
+                        int total = this._myStack.Count;
+                        for (int i = 0; i < total; i++)
+                        {
+                            if (_myStack.Peek() is Variable)
+                            {
+                                n.AddVariable(_myStack.Pop());
+                            }
+                        }
+                        this._myStack.Push(n);
+                    }
                     break;
             }
         }
