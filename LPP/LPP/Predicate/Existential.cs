@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LPP.Predicate
+namespace LPP
 {
     class Existential: Quantifier
     {
-        public Existential(string name, Variable variable): base(name, variable) { }
+        public Existential(string name, PredicateVariable variable): base(name, variable) { }
     }
 }

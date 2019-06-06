@@ -86,7 +86,8 @@
     <Compile Include="IProposition.cs" />
     <Compile Include="MoreLinq\MoreEnumerable.DistinctBy.cs" />
     <Compile Include="Predicate\Existential.cs" />
-    <Compile Include="Predicate\Formula.cs" />
+    <Compile Include="Semantic Tableaux\SemanticTableaux.cs" />
+    <Compile Include="Variable\Variable.cs" />
     <Compile Include="Predicate\Quantifier.cs" />
     <Compile Include="Predicate\Universal.cs" />
     <Compile Include="TruthTable\MyCustomizeColumn.cs" />
@@ -95,7 +96,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tree.cs" />
     <Compile Include="TruthTable\TruthTable.cs" />
-    <Compile Include="Variable\Variable.cs" />
+    <Compile Include="Variable\PredicateVariable.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

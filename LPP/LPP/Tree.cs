@@ -88,28 +88,28 @@ namespace LPP
                     this._myStack.Push(n);
                     break;
                 case "!":
-                    n = new Existential(c, new Variable(this._myStack.Pop().ToString()));
+                    n = new Existential(c, new PredicateVariable(this._myStack.Pop().ToString()));
                     n.RightNode = this._myStack.Pop();
                     this._myStack.Push(n);
                     break;
                 case "@":
-                    n = new Universal(c, new Variable(this._myStack.Pop().ToString()));
+                    n = new Universal(c, new PredicateVariable(this._myStack.Pop().ToString()));
                     n.RightNode = this._myStack.Pop();
                     this._myStack.Push(n);
                     break;
                 default:
                     if(char.IsLower(char.Parse(c)))
                     {
-                        n = new Variable(c);
+                        n = new PredicateVariable(c);
                         this._myStack.Push(n);
                     }
                     else
                     {
-                        n = new Formula(c);
+                        n = new Predicate.PredicateVariable(c);
                         int total = this._myStack.Count;
                         for (int i = 0; i < total; i++)
                         {
-                            if (_myStack.Peek() is Variable)
+                            if (_myStack.Peek() is PredicateVariable)
                             {
                                 n.AddVariable(_myStack.Pop());
                             }

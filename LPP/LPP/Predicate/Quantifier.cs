@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LPP.Predicate;
+using LPP.Connectives;
 
-namespace LPP.Predicate
+namespace LPP
 {
     class Quantifier: Node
     {
-        protected Variable _variable;
+        protected PredicateVariable _variable;
 
-        public Quantifier(string name, Variable variable) : base(name)
+        public Quantifier(string name, PredicateVariable variable) : base(name)
         {
             this._variable = variable;
         }
 
-        public Variable GetVariable()
+        public PredicateVariable GetVariable()
         {
             return this._variable;
         }
