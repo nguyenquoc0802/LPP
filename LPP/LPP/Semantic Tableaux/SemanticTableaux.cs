@@ -48,16 +48,16 @@ namespace LPP.Semantic_Tableaux
             while(this._branchingPoint.Count > 0)
             {
                 DerivationStep s = (DerivationStep)this._branchingPoint.Pop();
-                if (this.UnBranchingRules(ref s) || this.BranchingRules(ref s))
+                if (FunctionHelper.IsClosed(s.GetFormulas()))
                 {
-                    continue;
+                    s.RightNode = new DerivationStep();
+                    s.RightNode.AddFormulas(new Node("X"));
                 }
                 else
                 {
-                    if(FunctionHelper.IsClosed(s.GetFormulas()))
+                    if (this.UnBranchingRules(ref s) || this.BranchingRules(ref s))
                     {
-                        s.RightNode = new DerivationStep();
-                        s.RightNode.AddFormulas(new Node("X"));
+                        continue;
                     }
                 }
             }
@@ -173,6 +173,16 @@ namespace LPP.Semantic_Tableaux
                     s.RightNode = new DerivationStep();
                     s.RightNode.AddFormulas(i.LeftNode);
                     s.RightNode.AddFormulas(new Negation("~", i.RightNode));
+                    s.RightNode.Merge(temp);
+                    this._branchingPoint.Push(s.RightNode);
+                    return true;
+                }
+                else if (n is AndOperator a)
+                {
+                    temp.RemoveAt(index);
+                    s.RightNode = new DerivationStep();
+                    s.RightNode.AddFormulas(a.LeftNode);
+                    s.RightNode.AddFormulas(a.RightNode);
                     s.RightNode.Merge(temp);
                     this._branchingPoint.Push(s.RightNode);
                     return true;

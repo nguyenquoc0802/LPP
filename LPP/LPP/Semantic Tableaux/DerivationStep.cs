@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LPP.Connectives;
 using LPP.Predicate;
+using MoreLinq;
 
 namespace LPP.Semantic_Tableaux
 {
@@ -49,6 +50,8 @@ namespace LPP.Semantic_Tableaux
         public override void Merge(List<Node> other)
         {
             this._logicFormulas.AddRange(other);
+            List<Node> uniqueList = this._logicFormulas.DistinctBy(n => n.ToString()).ToList();
+            this._logicFormulas = uniqueList;
         }
 
         public override string ToString()
