@@ -136,32 +136,8 @@ namespace LPP
         {
             int index = 1;
             string content = "graph logic {\r\nnode [ fontname = \"Arial\" ]\r\n";
-            this.SetIndexHelper(this._root, ref index);
-            return this.DrawTreeHelper(this._root, ref content) + "}";
-        }
-
-        //help to create the content
-        private string DrawTreeHelper(Node root, ref string content)
-        {
-            if(root != null)
-            {
-                root.DrawGraphHelper(ref content);
-                this.DrawTreeHelper(root.LeftNode, ref content);
-                this.DrawTreeHelper(root.RightNode, ref content);
-            }
-            return content;
-        }
-
-        //set index for each node
-        private void SetIndexHelper(Node root, ref int index)
-        {
-            if(root != null)
-            {
-                root.Index = index;
-                index++;
-                this.SetIndexHelper(root.LeftNode, ref index);
-                this.SetIndexHelper(root.RightNode, ref index);
-            }
+            FunctionHelper.SetIndexHelper(this._root, ref index);
+            return FunctionHelper.DrawTreeHelper(this._root, ref content) + "}";
         }
 
         //help converse to prefix by convert reversed infix to postfix form

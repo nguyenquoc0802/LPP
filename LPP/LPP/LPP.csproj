@@ -86,6 +86,7 @@
     <Compile Include="IProposition.cs" />
     <Compile Include="MoreLinq\MoreEnumerable.DistinctBy.cs" />
     <Compile Include="Predicate\Existential.cs" />
+    <Compile Include="Semantic Tableaux\DerivationStep.cs" />
     <Compile Include="Semantic Tableaux\SemanticTableaux.cs" />
     <Compile Include="Variable\Variable.cs" />
     <Compile Include="Predicate\Quantifier.cs" />

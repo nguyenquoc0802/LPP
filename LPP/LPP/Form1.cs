@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using LPP.Semantic_Tableaux;
 
 namespace LPP
 {
@@ -21,16 +22,22 @@ namespace LPP
         }
 
         Tree myTree;
+        SemanticTableaux proofTree;
 
         private void btnRead_Click(object sender, EventArgs e)
         {
             //enable button
             btnDraw.Enabled = true;
+            btnDrawProofTree.Enabled = true;
             //create binary tree
             string proposition = tbInput.Text;
+            //create normal tree
             myTree.InsertTree(proposition);
+            //declare and create proof tree
+            proofTree = new SemanticTableaux(myTree.GetRoot());
+            proofTree.CreateProofTree();
             //check input
-            if(FunctionHelper.EvaluateFormula(proposition))
+            if (FunctionHelper.EvaluateFormula(proposition))
             {
                 tbOutputInfix.Text = myTree.DisplayInOrder();
             }
@@ -108,6 +115,18 @@ namespace LPP
             tbSimplifiedDisjunction.Text = "";
             lbDisjunctiveNormalForm.Items.Clear();
             lbNAND.Items.Clear();
+        }
+
+        private void btnDrawProofTree_Click(object sender, EventArgs e)
+        {
+            string content = proofTree.DrawTree();
+            File.WriteAllText(@"tree.dot", content);
+            Process dot = new Process();
+            dot.StartInfo.FileName = @".\External\dot.exe";
+            dot.StartInfo.Arguments = "-Tpng -otree.png tree.dot";
+            dot.Start();
+            dot.WaitForExit();
+            Process.Start(@"tree.png");
         }
     }
 }

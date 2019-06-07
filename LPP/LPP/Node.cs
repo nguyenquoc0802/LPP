@@ -24,6 +24,12 @@ namespace LPP
             this.RightNode = null;
         }
 
+        public Node() { }   
+
+        public virtual void Merge(List<Node> other) { }
+
+        public virtual void AddFormulas(Node n) { }
+
         public virtual void AddVariable(Node n) { }
 
         public virtual bool CalculateResult() { return true; }
@@ -32,5 +38,10 @@ namespace LPP
 
         //each node have different implementation
         public virtual void DrawGraphHelper(ref string content) { }
+
+        public override string ToString()
+        {
+            return this._name;
+        }
     }
 }

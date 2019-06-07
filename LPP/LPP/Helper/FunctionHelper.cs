@@ -5,6 +5,7 @@ using System.Text;
 using System.Numerics;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using LPP.Connectives;
 
 namespace LPP
 {
@@ -145,6 +146,48 @@ namespace LPP
             if(c == "&" || c == "|" || c == ">" || c == "=" || c == "~")
             {
                 return true;
+            }
+            return false;
+        }
+
+        //preorder, help create content of for drawing the tree
+        public static string DrawTreeHelper(Node root, ref string content)
+        {
+            if (root != null)
+            {
+                root.DrawGraphHelper(ref content);
+                DrawTreeHelper(root.LeftNode, ref content);
+                DrawTreeHelper(root.RightNode, ref content);
+            }
+            return content;
+        }
+
+        //set index for each node
+        public static void SetIndexHelper(Node root, ref int index)
+        {
+            if (root != null)
+            {
+                root.Index = index;
+                index++;
+                SetIndexHelper(root.LeftNode, ref index);
+                SetIndexHelper(root.RightNode, ref index);
+            }
+        }
+
+        public static bool IsClosed(List<Node> _logicFormulas)
+        {
+            foreach (var n in _logicFormulas)
+            {
+                foreach (var n1 in _logicFormulas)
+                {
+                    if (n is Negation)
+                    {
+                        if (n.RightNode.ToString() == n1.ToString())
+                        {
+                            return true;
+                        }
+                    }
+                }
             }
             return false;
         }

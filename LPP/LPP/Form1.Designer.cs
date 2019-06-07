@@ -46,6 +46,7 @@
             this.lbBoundVar = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnDrawProofTree = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnRead
@@ -218,6 +219,17 @@
             this.label2.TabIndex = 22;
             this.label2.Text = "Unbound Variable";
             // 
+            // btnDrawProofTree
+            // 
+            this.btnDrawProofTree.Enabled = false;
+            this.btnDrawProofTree.Location = new System.Drawing.Point(93, 211);
+            this.btnDrawProofTree.Name = "btnDrawProofTree";
+            this.btnDrawProofTree.Size = new System.Drawing.Size(99, 20);
+            this.btnDrawProofTree.TabIndex = 0;
+            this.btnDrawProofTree.Text = "Draw Proof Tree";
+            this.btnDrawProofTree.UseVisualStyleBackColor = true;
+            this.btnDrawProofTree.Click += new System.EventHandler(this.btnDrawProofTree_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -239,6 +251,7 @@
             this.Controls.Add(this.btnReadDisjunction);
             this.Controls.Add(this.btnReadNAND);
             this.Controls.Add(this.btnClear);
+            this.Controls.Add(this.btnDrawProofTree);
             this.Controls.Add(this.btnDraw);
             this.Controls.Add(this.btnRead);
             this.Name = "Form1";
@@ -268,6 +281,7 @@
         private System.Windows.Forms.ListBox lbBoundVar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnDrawProofTree;
     }
 }
 

@@ -8,7 +8,10 @@ namespace LPP.Connectives
 {
     class Negation: Connective
     {
-        public Negation(string value) : base(value) { }
+        public Negation(string value, Node rightNode = null) : base(value)
+        {
+            this.RightNode = rightNode;
+        }
 
         public override bool CalculateResult()
         {

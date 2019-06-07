@@ -8,7 +8,11 @@ namespace LPP.Connectives
 {
     class AndOperator: Connective
     {
-        public AndOperator(string value) : base(value) { }
+        public AndOperator(string value, Node leftNode = null, Node rightNode = null) : base(value)
+        {
+            this.LeftNode = leftNode;
+            this.RightNode = rightNode;
+        }
 
         public override bool CalculateResult()
         {
