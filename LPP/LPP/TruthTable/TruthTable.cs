@@ -19,18 +19,18 @@ namespace LPP
             this._root = root;
         }
 
-        public List<Predicate.PredicateVariable> GetUniqueFormulaList()
+        public List<Variable> GetUniqueFormulaList()
         {
-            List<Predicate.PredicateVariable> temp = new List<Predicate.PredicateVariable>();
+            List<Variable> temp = new List<Variable>();
             this.PopulateListOfFormula(this._root, ref temp);
             // third party library, will try to do by myself
-            List<Predicate.PredicateVariable> uniqueList = temp.DistinctBy(v => v.ToString()).ToList();
+            List<Variable> uniqueList = temp.DistinctBy(v => v.ToString()).ToList();
             return uniqueList;
         }
         
-        private List<Predicate.PredicateVariable> GetFormulaList()
+        private List<Variable> GetFormulaList()
         {
-            List<Predicate.PredicateVariable> temp = new List<Predicate.PredicateVariable>();
+            List<Variable> temp = new List<Variable>();
             this.PopulateListOfFormula(this._root, ref temp);
             return temp;
         }
@@ -47,12 +47,12 @@ namespace LPP
         }
 
         //populate list of varible including the same variable
-        private void PopulateListOfFormula(Node root, ref List<Predicate.PredicateVariable> variableList)
+        private void PopulateListOfFormula(Node root, ref List<Variable> variableList)
         {
             //tranverse through the tree using pre-order
             if (root != null)
             {
-                if (root is Predicate.PredicateVariable v)
+                if (root is Variable v)
                 {
                     variableList.Add(v);
                 }
@@ -65,8 +65,8 @@ namespace LPP
         private List<MyCustomizeColumn> CreateTable()
         {
             List<MyCustomizeColumn> myTable = new List<MyCustomizeColumn>();
-            List<Predicate.PredicateVariable> temp = this.GetUniqueFormulaList();
-            List<Predicate.PredicateVariable> tempAllVariable = this.GetFormulaList();
+            List<Variable> temp = this.GetUniqueFormulaList();
+            List<Variable> tempAllVariable = this.GetFormulaList();
             int totalVarible = temp.Count;
             int rows = Convert.ToInt32(Math.Pow(2, totalVarible));
             bool result = false;

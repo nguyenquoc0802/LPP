@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace LPP.Predicate
 {
-    class PredicateVariable: Node, IComparable<PredicateVariable>
+    class Variable: Node, IComparable<Variable>
     {
         private List<Node> _variables;
 
-        public PredicateVariable(string name): base (name)
+        public Variable(string name): base (name)
         {
             this._variables = new List<Node>();
         }
@@ -20,7 +20,7 @@ namespace LPP.Predicate
             content += "node" + this.Index + " [ label = \"" + this.ToString() + "\" ]\r\n";
         }
 
-        public int CompareTo(PredicateVariable other)
+        public int CompareTo(Variable other)
         {
             return this._name.CompareTo(other._name);
         }

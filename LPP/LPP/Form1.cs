@@ -26,6 +26,9 @@ namespace LPP
 
         private void btnRead_Click(object sender, EventArgs e)
         {
+            //clear lb
+            lbBoundVar.Items.Clear();
+            lbUnboundVar.Items.Clear();
             //enable button
             btnDraw.Enabled = true;
             btnDrawProofTree.Enabled = true;
@@ -40,6 +43,14 @@ namespace LPP
             if (FunctionHelper.EvaluateFormula(proposition))
             {
                 tbOutputInfix.Text = myTree.DisplayInOrder();
+                foreach(var v in myTree.GetBoundVar())
+                {
+                    lbBoundVar.Items.Add(v);
+                }
+                foreach(var v in myTree.GetUnboundVar())
+                {
+                    lbUnboundVar.Items.Add(v);
+                }
             }
             else
             {

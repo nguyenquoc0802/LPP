@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Drawing;
 using MoreLinq;
+using LPP.Semantic_Tableaux;
 
 namespace LPP
 {
@@ -105,7 +106,7 @@ namespace LPP
                     }
                     else
                     {
-                        n = new Predicate.PredicateVariable(c);
+                        n = new Variable(c);
                         int total = this._myStack.Count;
                         for (int i = 0; i < total; i++)
                         {
@@ -183,6 +184,60 @@ namespace LPP
             string reverse = this.InfixToPrefixHelper(str1);
             string result = FunctionHelper.ReverseString(reverse);
             return result;
+        }
+
+        public void FindBoundVar(Node n, ref List<string> bound)
+        {
+            if(n != null)
+            {
+                if(n is Quantifier q)
+                {
+                    bound.Add(q.GetVariable().ToString());
+                    bound = bound.DistinctBy(v => v.ToString()).ToList();
+                }
+                this.FindBoundVar(n.LeftNode, ref bound);
+                this.FindBoundVar(n.RightNode, ref bound);
+            }
+        }
+
+        public void FindPredicateVar(Node n, ref List<string> unbound)
+        {
+            if(n != null)
+            {
+                if(n is Variable v)
+                {
+                    foreach(var pv in v.GetVariables())
+                    {
+                        unbound.Add(pv.ToString());
+                    }
+                    unbound = unbound.DistinctBy(x => x.ToString()).ToList();
+                }
+                this.FindPredicateVar(n.LeftNode, ref unbound);
+                this.FindPredicateVar(n.RightNode, ref unbound);
+            }
+        }
+
+        public List<string> GetBoundVar()
+        {
+            List<string> temp = new List<string>();
+            this.FindBoundVar(this._root, ref temp);
+            return temp;
+        }
+
+        public List<string> GetUnboundVar()
+        {
+            List<string> tempUnbound = new List<string>();
+            List<string> tempBound = new List<string>();
+            this.FindPredicateVar(this._root, ref tempUnbound);
+            this.FindBoundVar(this._root, ref tempBound);
+            foreach(var v in tempBound)
+            {
+                if(tempUnbound.Contains(v))
+                {
+                    tempUnbound.Remove(v);
+                }
+            }
+            return tempUnbound;
         }
     }
 }
