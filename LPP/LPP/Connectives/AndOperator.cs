@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP.Connectives
 {
+    [Serializable]
     class AndOperator: Connective
     {
         public AndOperator(string value, Node leftNode = null, Node rightNode = null) : base(value)

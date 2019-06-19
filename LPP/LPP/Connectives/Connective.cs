@@ -7,6 +7,7 @@ using LPP.Connectives;
 
 namespace LPP
 {
+    [Serializable]
     abstract class Connective: Node
     {
         //field

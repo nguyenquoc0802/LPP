@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP.Connectives
 {
+    [Serializable]
     class Implication: Connective
     {
         public Implication(string value) : base(value) { }

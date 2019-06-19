@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP.Connectives
 {
+    [Serializable]
     class BiImplication: Connective
     {
         public BiImplication(string value) : base(value) { }

@@ -7,10 +7,10 @@ using LPP.Connectives;
 
 namespace LPP
 {
-    class Node : ICalculateExpression
+    [Serializable]
+    public class Node : ICalculateExpression
     {
         //field
-        //might have method to set node privately
         protected string _name;
         public Node LeftNode { get; set; }
         public Node RightNode { get; set; }
@@ -24,20 +24,21 @@ namespace LPP
             this.RightNode = null;
         }
 
-        public Node() { }   
+        public Node() { }
+
+        public virtual void ChangeVariable(PredicateVariable p) { }
 
         public virtual void Merge(List<Node> other) { }
 
         public virtual void AddFormulas(Node n) { }
 
-        public virtual void AddVariable(Node n) { }
+        public virtual void AddVariable(PredicateVariable p) { }
 
         public virtual bool CalculateResult() { return true; }
 
-        public virtual string ConvertOperator() { return ""; }
-
-        //each node have different implementation
         public virtual void DrawGraphHelper(ref string content) { }
+
+        public virtual string ConvertOperator() { return ""; }
 
         public override string ToString()
         {

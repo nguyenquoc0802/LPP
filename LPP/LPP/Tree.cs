@@ -13,7 +13,7 @@ using LPP.Semantic_Tableaux;
 
 namespace LPP
 {
-    class Tree
+    public class Tree
     {
         private Node _root;
         private Stack<Node> _myStack;
@@ -110,9 +110,10 @@ namespace LPP
                         int total = this._myStack.Count;
                         for (int i = 0; i < total; i++)
                         {
-                            if (_myStack.Peek() is PredicateVariable)
+                            if (_myStack.Peek() is PredicateVariable p)
                             {
-                                n.AddVariable(_myStack.Pop());
+                                n.AddVariable(p);
+                                _myStack.Pop();
                             }
                         }
                         this._myStack.Push(n);

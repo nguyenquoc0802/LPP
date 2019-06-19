@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP.Connectives
 {
+    [Serializable]
     class OrOperator: Connective
     {
         public OrOperator(string value) : base(value) { }

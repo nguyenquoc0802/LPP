@@ -10,13 +10,39 @@ using MoreLinq;
 namespace LPP.Semantic_Tableaux
 {
     //check again later, need to improve for performance
-    class DerivationStep : Node
+    public class DerivationStep : Node
     {
         private List<Node> _logicFormulas;
+        private List<PredicateVariable> _activeVariables;
 
-        public DerivationStep()
+        public DerivationStep(List<PredicateVariable> activeVariables = null)
         {
             this._logicFormulas = new List<Node>();
+            this._activeVariables = (activeVariables == null) ?  new List<PredicateVariable>() : activeVariables.ToList(); 
+        }
+
+        public List<PredicateVariable> GetActiveVariables()
+        {
+            return this._activeVariables;
+        }
+
+        public PredicateVariable GetLastVar()
+        {
+            return this._activeVariables[this._activeVariables.Count - 1];
+        }
+
+        public void AddActiveVariable()
+        {
+            if(this._activeVariables.Count != 0)
+            {
+                PredicateVariable lastVar = this._activeVariables[this._activeVariables.Count - 1];
+                string nextLetter = Convert.ToString((char)(lastVar.ToString()[0] + 1));
+                this._activeVariables.Add(new PredicateVariable(nextLetter));
+            }
+            else
+            {
+                this._activeVariables.Add(new PredicateVariable("a"));
+            }
         }
 
         public List<Node> GetFormulas()
@@ -68,7 +94,19 @@ namespace LPP.Semantic_Tableaux
                     result += this._logicFormulas[i];
                 }
             }
-            return result + " }";
+            result += " } [ ";
+            for (int i = 0; i < this._activeVariables.Count; i++)
+            {
+                if (i != this._activeVariables.Count - 1)
+                {
+                    result += this._activeVariables[i] + ", ";
+                }
+                else
+                {
+                    result += this._activeVariables[i];
+                }
+            }
+            return result + " ]";
         }
     }
 }

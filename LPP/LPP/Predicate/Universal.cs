@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
+    [Serializable]
     class Universal: Quantifier
     {
         public Universal(string name, PredicateVariable variable): base(name, variable) { }

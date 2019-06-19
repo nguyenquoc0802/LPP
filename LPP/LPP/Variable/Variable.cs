@@ -6,18 +6,38 @@ using System.Threading.Tasks;
 
 namespace LPP.Predicate
 {
+    [Serializable]
     class Variable: Node, IComparable<Variable>
     {
-        private List<Node> _variables;
+        private List<PredicateVariable> _variables;
 
         public Variable(string name): base (name)
         {
-            this._variables = new List<Node>();
+            this._variables = new List<PredicateVariable>();
         }
 
-        public override void DrawGraphHelper(ref string content)
+        public override void ChangeVariable(PredicateVariable p)
         {
-            content += "node" + this.Index + " [ label = \"" + this.ToString() + "\" ]\r\n";
+            foreach (PredicateVariable v in _variables)
+            {
+                if (v.ToString() != p.ToString())
+                {
+                    if (!v.IsSubtituted())
+                    {
+                        v.ChangeVariable(p);
+                        break;
+                    }
+                }
+            }
+        }
+
+        public bool AllReplace()
+        {
+            if (this._variables[this._variables.Count - 1].IsSubtituted())
+            {
+                return true;
+            }
+            return false;
         }
 
         public int CompareTo(Variable other)
@@ -35,12 +55,18 @@ namespace LPP.Predicate
             return this._name;
         }
 
-        public List<Node> GetVariables()
+        public List<PredicateVariable> GetVariables()
         {
             return this._variables;
         }
 
-        public override void AddVariable(Node variable)
+        public override void DrawGraphHelper(ref string content)
+        {
+            content += "node" + this.Index + " [ label = \"" + this.ToString() + "\" ]\r\n";
+        }
+
+
+        public override void AddVariable(PredicateVariable variable)
         {
             this._variables.Add(variable);
         }

@@ -36,9 +36,6 @@ namespace LPP
             string proposition = tbInput.Text;
             //create normal tree
             myTree.InsertTree(proposition);
-            //declare and create proof tree
-            proofTree = new SemanticTableaux(myTree.GetRoot());
-            proofTree.CreateProofTree();
             //check input
             if (FunctionHelper.EvaluateFormula(proposition))
             {
@@ -130,6 +127,9 @@ namespace LPP
 
         private void btnDrawProofTree_Click(object sender, EventArgs e)
         {
+            //declare and draw proof tree
+            proofTree = new SemanticTableaux(myTree.GetRoot());
+            proofTree.CreateProofTree();
             string content = proofTree.DrawTree();
             File.WriteAllText(@"tree.dot", content);
             Process dot = new Process();

@@ -8,13 +8,26 @@ using LPP.Connectives;
 
 namespace LPP
 {
+    [Serializable]
     class Quantifier: Node
     {
+        protected bool _subtitution;
         protected PredicateVariable _variable;
 
         public Quantifier(string name, PredicateVariable variable) : base(name)
         {
+            this._subtitution = false;
             this._variable = variable;
+        }
+
+        public bool ReplaceChecked()
+        {
+            return _subtitution;
+        }
+
+        public void SetSubtitution()
+        {
+            this._subtitution = true;
         }
 
         public PredicateVariable GetVariable()

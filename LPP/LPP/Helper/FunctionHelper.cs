@@ -6,6 +6,11 @@ using System.Numerics;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using LPP.Connectives;
+using LPP.Semantic_Tableaux;
+using LPP.Predicate;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 
 namespace LPP
 {
@@ -176,20 +181,60 @@ namespace LPP
 
         public static bool IsClosed(List<Node> _logicFormulas)
         {
-            foreach (var n in _logicFormulas)
+            foreach (var f in _logicFormulas)
             {
-                foreach (var n1 in _logicFormulas)
+                if(f is Variable v1)
                 {
-                    if (n is Negation)
+                    foreach (var f1 in _logicFormulas)
                     {
-                        if (n.RightNode.ToString() == n1.ToString())
+                        if (f1 is Negation n)
                         {
-                            return true;
+                            if(n.RightNode is Variable v2)
+                            {
+                                if(v1.ToString() == v2.ToString())
+                                {
+                                    if (CompareList(v1.GetVariables(), v2.GetVariables()))
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
             return false;
+        }
+
+        public static bool CompareList(List<PredicateVariable> p1, List<PredicateVariable> p2)
+        {
+            if(p1.Count != p2.Count)
+            {
+                return false;
+            }
+            else
+            {
+                for (int i = 0; i < p1.Count; i++)
+                {
+                    if (p1[i].ToString() != p2[i].ToString())
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        public static T DeepClone<T>(T obj)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, obj);
+                ms.Position = 0;
+
+                return (T)formatter.Deserialize(ms);
+            }
         }
     }
 }

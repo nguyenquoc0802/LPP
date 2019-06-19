@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP.Connectives
 {
+    [Serializable]
     class Negation: Connective
     {
         public Negation(string value, Node rightNode = null) : base(value)
