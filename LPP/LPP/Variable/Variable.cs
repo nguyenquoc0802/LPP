@@ -16,6 +16,21 @@ namespace LPP.Predicate
             this._variables = new List<PredicateVariable>();
         }
 
+        public void ChangePredicateVariable(PredicateVariable p, string oldVar)
+        {
+            foreach (PredicateVariable v in _variables)
+            {
+                if (!v.IsSubtituted())
+                {
+                    if(v.ToString() == oldVar)
+                    {
+                        v.ChangeVariable(p);
+                        break;
+                    }
+                }
+            }
+        }
+
         public override void ChangeVariable(PredicateVariable p)
         {
             foreach (PredicateVariable v in _variables)
@@ -33,11 +48,14 @@ namespace LPP.Predicate
 
         public bool AllReplace()
         {
-            if (this._variables[this._variables.Count - 1].IsSubtituted())
+            foreach(var v in this._variables)
             {
-                return true;
+                if(!v.IsSubtituted())
+                {
+                    return false;
+                }
             }
-            return false;
+            return true;
         }
 
         public int CompareTo(Variable other)

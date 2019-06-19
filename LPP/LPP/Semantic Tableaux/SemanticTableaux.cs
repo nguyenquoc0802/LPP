@@ -198,18 +198,19 @@ namespace LPP.Semantic_Tableaux
                 if (n is Universal u)
                 {
                     Universal newUniversal = FunctionHelper.DeepClone<Universal>(u);
-                    if (u.ReplaceChecked() == true)
+                    if (newUniversal.ReplaceChecked() == true)
                     {
                         continue;
                     }
                     DerivationStep newStep = new DerivationStep(s.GetActiveVariables());
-                    u.SetSubtitution();
+                    newUniversal.SetSubtitution();
                     foreach(var v in newStep.GetActiveVariables())
                     {
                         Node addNode = FunctionHelper.DeepClone<Node>(newUniversal.RightNode);
-                        this.ChangeVarHelper(addNode, v);
+                        this.ChangeVarHelperUni(addNode, v);
                         newStep.AddFormulas(addNode);
                     }
+                    newStep.AddFormulas(newUniversal);
                     newStep.Merge(temp);
                     s.RightNode = newStep;
                     this._branchingPoint.Push(s.RightNode);
@@ -218,18 +219,19 @@ namespace LPP.Semantic_Tableaux
                 else if(n is Negation && n.RightNode is Existential e)
                 {
                     Existential newExist = FunctionHelper.DeepClone<Existential>(e);
-                    if (e.ReplaceChecked() == true)
+                    if (newExist.ReplaceChecked() == true)
                     {
                         continue;
                     }
                     DerivationStep newStep = new DerivationStep(s.GetActiveVariables());
-                    e.SetSubtitution();
+                    newExist.SetSubtitution();
                     foreach (var v in newStep.GetActiveVariables())
                     {
                         Node addNode = FunctionHelper.DeepClone<Node>(newExist.RightNode);
-                        this.ChangeVarHelper(addNode, v);
+                        this.ChangeVarHelperUni(addNode, v);
                         newStep.AddFormulas(new Negation("~", addNode));
                     }
+                    newStep.AddFormulas(new Negation("~", newExist));
                     newStep.Merge(temp);
                     s.RightNode = newStep;
                     this._branchingPoint.Push(s.RightNode);
@@ -252,7 +254,7 @@ namespace LPP.Semantic_Tableaux
                     DerivationStep newStep = new DerivationStep(s.GetActiveVariables());
                     newStep.AddActiveVariable();
                     string checkVar = newExist.GetVariable().ToString();
-                    this.ChangeVarHelper(newExist.RightNode, newStep.GetLastVar());
+                    this.ChangeVarHelperExist(newExist.RightNode, newStep.GetLastVar(), checkVar);
                     newStep.AddFormulas(newExist.RightNode);
                     newStep.Merge(temp);
                     s.RightNode = newStep;
@@ -266,7 +268,7 @@ namespace LPP.Semantic_Tableaux
                     DerivationStep newStep = new DerivationStep(s.GetActiveVariables());
                     newStep.AddActiveVariable();
                     string checkVar = newUni.GetVariable().ToString();
-                    this.ChangeVarHelper(newUni.RightNode, newStep.GetLastVar());
+                    this.ChangeVarHelperExist(newUni.RightNode, newStep.GetLastVar(), checkVar);
                     newStep.AddFormulas(new Negation("~", newUni.RightNode));
                     newStep.Merge(temp);
                     s.RightNode = newStep;
@@ -277,16 +279,29 @@ namespace LPP.Semantic_Tableaux
             return false;
         }
 
-        public void ChangeVarHelper(Node n, PredicateVariable p)
+        public void ChangeVarHelperExist(Node n, PredicateVariable p, string oldVar)
         {
             if(n != null)
             {
                 if(n is Variable v)
                 {
+                    v.ChangePredicateVariable(p, oldVar);
+                }
+                this.ChangeVarHelperExist(n.RightNode, p, oldVar);
+                this.ChangeVarHelperExist(n.LeftNode, p, oldVar);
+            }
+        }
+
+        public void ChangeVarHelperUni(Node n, PredicateVariable p)
+        {
+            if (n != null)
+            {
+                if (n is Variable v)
+                {
                     v.ChangeVariable(p);
                 }
-                this.ChangeVarHelper(n.RightNode, p);
-                this.ChangeVarHelper(n.LeftNode, p);
+                this.ChangeVarHelperUni(n.RightNode, p);
+                this.ChangeVarHelperUni(n.LeftNode, p);
             }
         }
     }
